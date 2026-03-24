@@ -116,6 +116,54 @@ nav{
 }
 .btn-primary:hover::before{transform:translateX(100%)}
 .btn-primary:hover{box-shadow:0 6px 32px rgba(139,92,246,.6),0 0 0 1px rgba(139,92,246,.4);transform:translateY(-1px)}
+
+.lang-dropdown{position:relative}
+.lang-trigger{
+  display:inline-flex;align-items:center;justify-content:space-between;gap:12px;
+  min-width:118px;
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--border2);
+  color:var(--text);
+  border-radius:12px;
+  padding:10px 14px;
+  font-size:13px;font-weight:700;
+  cursor:pointer;
+  transition:border-color .2s, box-shadow .2s, background .2s;
+}
+.lang-trigger:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18)}
+.lang-trigger:focus{outline:none;border-color:rgba(139,92,246,.55);box-shadow:0 0 0 3px rgba(139,92,246,.15)}
+.lang-chevron{width:10px;height:10px;display:inline-block;border-right:2px solid rgba(255,255,255,.75);border-bottom:2px solid rgba(255,255,255,.75);transform:rotate(45deg) translateY(-2px);transition:transform .2s}
+.lang-dropdown.open .lang-chevron{transform:rotate(-135deg) translateY(1px)}
+.lang-menu{
+  position:absolute;top:calc(100% + 10px);right:0;z-index:300;
+  min-width:180px;max-height:320px;overflow:auto;
+  background:linear-gradient(180deg,rgba(8,11,28,.98),rgba(4,7,18,.98));
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:16px;
+  box-shadow:0 24px 60px rgba(0,0,0,.55), 0 0 0 1px rgba(139,92,246,.08);
+  padding:8px;
+  display:none;
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+}
+.lang-dropdown.open .lang-menu{display:block}
+.lang-option{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  border:none;background:transparent;color:var(--text);cursor:pointer;
+  border-radius:12px;padding:11px 12px;text-align:left;font-size:14px;font-weight:600;
+  transition:background .18s, color .18s;
+}
+.lang-option:hover{background:rgba(139,92,246,.12)}
+.lang-option.active{background:rgba(139,92,246,.18);color:#fff}
+.lang-option small{color:var(--muted);font-size:11px;font-weight:600}
+body.rtl-lang{direction:rtl}
+body.rtl-lang .nav-inner, body.rtl-lang .hero-inner, body.rtl-lang .contact-shell, body.rtl-lang .pricing-grid, body.rtl-lang .features-grid, body.rtl-lang .steps-grid, body.rtl-lang .stats-grid{direction:rtl}
+body.rtl-lang .logo-wrap, body.rtl-lang .nav-links, body.rtl-lang .nav-cta, body.rtl-lang .hero-actions, body.rtl-lang .hero-trust, body.rtl-lang .contact-actions{flex-direction:row-reverse}
+body.rtl-lang .hero-left, body.rtl-lang .section-header, body.rtl-lang .contact-card, body.rtl-lang .contact-form-card, body.rtl-lang .footer-grid{ text-align:right; }
+body.rtl-lang input, body.rtl-lang textarea{direction:rtl;text-align:right}
+body.rtl-lang .lang-menu{left:0;right:auto}
+body.rtl-lang .lang-option{text-align:right}
+@media(max-width:768px){.lang-trigger{min-width:104px;padding:10px 12px;font-size:12px}.lang-menu{min-width:160px}}
+
 @media(max-width:768px){.nav-links{display:none}.nav-cta .btn-ghost{display:none}}
 
 /* ── HERO ── */
@@ -774,6 +822,159 @@ footer{border-top:1px solid var(--border);padding:72px 0 44px}
 }
 .social-btn:hover{border-color:var(--v);background:rgba(139,92,246,.1);color:var(--text)}
 
+/* ── CONTACT ── */
+.contact-shell{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:24px;
+  align-items:stretch;
+}
+.contact-card,
+.contact-form-card{
+  position:relative;
+  border:1px solid var(--border2);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.025)),
+    radial-gradient(circle at top right, rgba(139,92,246,0.14), transparent 38%),
+    radial-gradient(circle at bottom left, rgba(0,229,190,0.10), transparent 34%);
+  border-radius:26px;
+  padding:32px;
+  box-shadow:0 24px 90px rgba(0,0,0,0.30);
+  overflow:hidden;
+}
+.contact-card::before,
+.contact-form-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(135deg, rgba(255,255,255,0.05), transparent 38%, transparent 62%, rgba(255,255,255,0.02));
+}
+.contact-kicker{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 14px;
+  border-radius:999px;
+  border:1px solid rgba(0,229,190,0.18);
+  background:rgba(0,229,190,0.08);
+  color:var(--teal);
+  font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+}
+.contact-title{
+  font-family:"Space Grotesk",sans-serif;
+  font-size:clamp(30px,4vw,48px);
+  line-height:1.04;
+  margin:18px 0 14px;
+}
+.contact-copy{color:var(--muted);font-size:16px;max-width:540px}
+.contact-points{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-top:26px;
+}
+.contact-point{
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:16px 18px;
+  background:rgba(255,255,255,0.025);
+}
+.contact-point-label{
+  display:block;
+  font-size:11px;
+  color:var(--subtle);
+  text-transform:uppercase;
+  letter-spacing:1px;
+  margin-bottom:8px;
+  font-weight:800;
+}
+.contact-point a,
+.contact-point strong{
+  font-size:15px;
+  color:var(--text);
+}
+.contact-point p{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.55;
+}
+.contact-note{
+  margin-top:18px;
+  color:var(--muted);
+  font-size:13px;
+}
+.contact-form{
+  display:grid;
+  gap:14px;
+  position:relative;
+  z-index:2;
+}
+.contact-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.contact-field label{
+  display:block;
+  margin-bottom:8px;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:var(--subtle);
+}
+.contact-field input,
+.contact-field textarea{
+  width:100%;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border2);
+  border-radius:16px;
+  padding:14px 16px;
+  color:var(--text);
+  font:inherit;
+  outline:none;
+  transition:border-color .2s, background .2s, box-shadow .2s;
+}
+.contact-field textarea{
+  min-height:160px;
+  resize:vertical;
+}
+.contact-field input::placeholder,
+.contact-field textarea::placeholder{color:rgba(255,255,255,0.34)}
+.contact-field input:focus,
+.contact-field textarea:focus{
+  border-color:rgba(139,92,246,0.55);
+  background:rgba(255,255,255,0.055);
+  box-shadow:0 0 0 4px rgba(139,92,246,0.11);
+}
+.contact-actions{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:12px;
+}
+.contact-submit{
+  appearance:none;
+  border:none;
+  cursor:pointer;
+}
+.contact-helper{
+  color:var(--muted);
+  font-size:13px;
+}
+.contact-alt-link{
+  color:var(--teal);
+  font-weight:700;
+}
+@media(max-width:960px){
+  .contact-shell{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  .contact-card,.contact-form-card{padding:24px}
+  .contact-points,.contact-grid{grid-template-columns:1fr}
+}
+
+
 /* ── REVEAL ANIMATIONS ── */
 .reveal{opacity:0;transform:translateY(30px);transition:opacity .65s ease,transform .65s ease}
 .reveal.in{opacity:1;transform:none}
@@ -820,6 +1021,342 @@ body::before{
   z-index:999;transition:width .1s linear;
   box-shadow:0 0 12px rgba(139,92,246,.6);
 }
+
+
+/* ── MOBILE FIXES ── */
+@media (max-width: 768px) {
+  html { font-size: 15px; }
+  .container { padding: 0 18px; }
+
+  nav { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+  .nav-inner { height: 60px; }
+  .logo-text { font-size: 17px; }
+  .nav-cta .btn {
+    padding: 9px 14px;
+    font-size: 12px;
+    border-radius: 10px;
+  }
+
+  .hero {
+    min-height: auto;
+    padding: 96px 0 44px;
+    align-items: flex-start;
+  }
+  .hero-inner {
+    gap: 24px;
+    width: 100%;
+  }
+  .hero-left { width: 100%; }
+  .hero-eyebrow {
+    margin-bottom: 18px;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  h1 {
+    font-size: clamp(34px, 11vw, 50px);
+    letter-spacing: -1.4px;
+    margin-bottom: 14px;
+  }
+  .hero-sub {
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 24px;
+    max-width: 100%;
+  }
+  .hero-actions {
+    gap: 10px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .store-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 16px;
+    border-radius: 12px;
+  }
+  .hero-trust {
+    margin-top: 18px;
+    gap: 10px;
+  }
+  .trust-item {
+    font-size: 11px;
+  }
+  .trust-dot {
+    display: none;
+  }
+
+  .marquee-wrap { padding: 12px 0; }
+  .m-item {
+    padding: 0 18px;
+    font-size: 11px;
+  }
+
+  .stats-wrap { padding: 30px 0; }
+  .stat-cell { padding: 22px 14px; }
+  .stat-num { font-size: 30px; }
+  .stat-label { font-size: 12px; }
+
+  .section,
+  .ai-section,
+  .cta-section {
+    padding: 64px 0;
+  }
+  .section-header {
+    margin-bottom: 34px;
+  }
+  .section-header h2,
+  .ai-content h2,
+  .cta-h {
+    letter-spacing: -0.8px;
+    margin: 12px 0;
+  }
+  .section-header p,
+  .ai-content p,
+  .cta-p {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .features-grid,
+  .pricing-grid,
+  .testimonials-grid,
+  .security-grid,
+  .hiw-grid {
+    gap: 14px;
+  }
+  .feat-3d,
+  .testi-card,
+  .price-card,
+  .sec-card {
+    padding: 20px;
+    border-radius: 18px;
+  }
+  .feat-icon-3d {
+    width: 46px;
+    height: 46px;
+    font-size: 21px;
+    margin-bottom: 14px;
+  }
+  .feat-3d h3,
+  .hiw-step h3,
+  .sec-card h4 {
+    font-size: 16px;
+  }
+  .feat-3d p,
+  .hiw-step p,
+  .sec-card p,
+  .testi-quote,
+  .price-feat-list li {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .hiw-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .hiw-step {
+    background: rgba(255,255,255,.025);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 20px 16px;
+  }
+  .hiw-num {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    margin-bottom: 14px;
+  }
+
+  .ai-inner {
+    gap: 24px;
+  }
+  .ai-chat-window {
+    padding: 16px;
+    border-radius: 18px;
+  }
+  .bubble {
+    padding: 11px 13px;
+    font-size: 12.5px;
+  }
+  .bubble.user { margin-left: 14px; }
+
+  .modules-marquee-wrap { margin-top: 34px; }
+  .mod-pill {
+    padding: 9px 12px;
+    font-size: 11px;
+  }
+
+  .pricing-toggle {
+    gap: 10px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .price-tier { margin-bottom: 10px; }
+  .price-amount {
+    font-size: 42px;
+  }
+  .price-period {
+    margin-bottom: 20px;
+  }
+  .price-cta { margin-top: 20px; }
+
+  .langs-grid {
+    gap: 10px;
+  }
+  .lang-pill {
+    width: calc(50% - 5px);
+    justify-content: center;
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+
+  .cta-diamond {
+    margin-bottom: 20px;
+  }
+  .cta-bottom {
+    gap: 12px;
+    margin-top: 26px;
+  }
+
+  footer {
+    padding: 54px 0 34px;
+  }
+  .footer-inner {
+    gap: 26px;
+    margin-bottom: 30px;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .cta-ring1,
+  .cta-ring2,
+  .cta-ring3,
+  .grid-persp,
+  .hero-orb.o3,
+  .hero-orb.o4 {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .container { padding: 0 14px; }
+  .hero { padding: 88px 0 36px; }
+  .badge {
+    padding: 5px 12px;
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+  .stats-grid,
+  .langs-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .lang-pill {
+    width: 100%;
+  }
+  .nav-cta .btn-primary {
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+}
+
+
+/* --- AUTH MODAL + DARK INPUT FIXES --- */
+.contact-field input:-webkit-autofill,
+.contact-field input:-webkit-autofill:hover,
+.contact-field input:-webkit-autofill:focus,
+.contact-field textarea:-webkit-autofill,
+.contact-field textarea:-webkit-autofill:hover,
+.contact-field textarea:-webkit-autofill:focus,
+.auth-input:-webkit-autofill,
+.auth-input:-webkit-autofill:hover,
+.auth-input:-webkit-autofill:focus{
+  -webkit-text-fill-color:#f5f7ff;
+  -webkit-box-shadow:0 0 0px 1000px rgba(12,16,38,0.96) inset;
+  box-shadow:0 0 0px 1000px rgba(12,16,38,0.96) inset;
+  transition:background-color 9999s ease-in-out 0s;
+  caret-color:#f5f7ff;
+}
+.contact-field input,
+.contact-field textarea,
+.auth-input{
+  color:#f5f7ff !important;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.06), rgba(139,92,246,0.06)),
+    rgba(8,11,28,0.88) !important;
+}
+.auth-backdrop{
+  position:fixed; inset:0; background:rgba(4,6,18,0.72); backdrop-filter:blur(14px);
+  z-index:120; opacity:0; visibility:hidden; transition:opacity .24s ease, visibility .24s ease;
+}
+.auth-backdrop.open{opacity:1; visibility:visible}
+.auth-modal{
+  position:fixed; inset:50% auto auto 50%; transform:translate(-50%,-48%) scale(.97);
+  width:min(92vw, 980px); max-height:min(88vh, 860px); overflow:auto;
+  background:linear-gradient(135deg, rgba(18,24,58,.96), rgba(10,13,34,.97));
+  border:1px solid rgba(255,255,255,.09); border-radius:28px; box-shadow:0 40px 120px rgba(0,0,0,.48);
+  z-index:121; opacity:0; visibility:hidden; transition:opacity .24s ease, transform .24s ease, visibility .24s ease;
+}
+.auth-modal.open{opacity:1; visibility:visible; transform:translate(-50%,-50%) scale(1)}
+.auth-shell{display:grid; grid-template-columns:1.05fr .95fr}
+.auth-side{
+  padding:34px 30px 30px;
+  border-right:1px solid rgba(255,255,255,.07);
+  background:radial-gradient(circle at top left, rgba(139,92,246,.18), transparent 48%), linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+}
+.auth-side h3{font-size:38px; line-height:1.04; margin:0 0 14px}
+.auth-side p{color:var(--muted); margin:0 0 20px}
+.auth-side ul{list-style:none; padding:0; margin:0; display:grid; gap:12px}
+.auth-side li{display:flex; align-items:flex-start; gap:10px; color:#eef2ff}
+.auth-side li span{width:24px; height:24px; border-radius:999px; display:inline-flex; align-items:center; justify-content:center; background:rgba(16,185,129,.16); color:#34d399; font-size:13px; margin-top:2px}
+.auth-main{padding:26px 28px 28px}
+.auth-top{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:18px}
+.auth-tabs{display:flex; gap:10px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); padding:6px; border-radius:16px}
+.auth-tab{
+  border:none; border-radius:12px; padding:10px 14px; background:transparent; color:#cfd5ff; font-weight:700; cursor:pointer;
+}
+.auth-tab.active{background:linear-gradient(135deg, rgba(139,92,246,.24), rgba(45,212,191,.14)); color:#fff}
+.auth-close{border:none; background:transparent; color:#cfd5ff; width:40px; height:40px; border-radius:12px; cursor:pointer; font-size:20px}
+.auth-close:hover{background:rgba(255,255,255,.06)}
+.auth-panel{display:none}
+.auth-panel.active{display:block}
+.auth-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+.auth-field{display:flex; flex-direction:column; gap:8px; margin-bottom:14px}
+.auth-field label{font-size:12px; text-transform:uppercase; letter-spacing:.12em; color:#9aa5dc; font-weight:800}
+.auth-input{
+  border:1px solid rgba(255,255,255,.10); border-radius:18px; min-height:56px; padding:0 18px; outline:none; font-size:16px;
+}
+.auth-input:focus{border-color:rgba(45,212,191,.55); box-shadow:0 0 0 4px rgba(45,212,191,.10)}
+.auth-row{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:8px}
+.auth-submit{
+  border:none; border-radius:16px; min-height:52px; padding:0 20px; background:linear-gradient(135deg, #8b5cf6, #6d28d9); color:#fff; font-weight:800; cursor:pointer;
+  box-shadow:0 14px 34px rgba(109,40,217,.28);
+}
+.auth-submit.secondary{background:linear-gradient(135deg, #0ea5e9, #2563eb); box-shadow:0 14px 34px rgba(37,99,235,.25)}
+.auth-note,.auth-status{color:#9aa5dc; font-size:14px}
+.auth-status{min-height:22px}
+.auth-status.ok{color:#34d399}
+.auth-status.err{color:#fca5a5}
+.auth-user-badge{display:none; align-items:center; gap:10px; padding:10px 12px; border-radius:16px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); color:#fff}
+.auth-user-badge.show{display:inline-flex}
+.auth-user-dot{width:10px; height:10px; border-radius:999px; background:#34d399; box-shadow:0 0 20px #34d399}
+.contact-helper.status-ok{color:#34d399}
+.contact-helper.status-err{color:#fca5a5}
+@media (max-width: 900px){
+  .auth-shell{grid-template-columns:1fr}
+  .auth-side{border-right:none; border-bottom:1px solid rgba(255,255,255,.07)}
+}
+@media (max-width: 640px){
+  .auth-grid{grid-template-columns:1fr}
+  .auth-modal{width:min(96vw, 980px)}
+  .auth-side h3{font-size:31px}
+}
+
 </style>
 </head>
 <body>
@@ -845,11 +1382,32 @@ body::before{
       <a href="#languages">Languages</a>
     </div>
     <div class="nav-cta">
-      <a href="#pricing" class="btn btn-ghost">Log In</a>
+      <div class="lang-dropdown" id="langDropdown">
+        <button type="button" id="langTrigger" class="lang-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Choose language">
+          <span id="langCurrent">English</span>
+          <span class="lang-chevron" aria-hidden="true"></span>
+        </button>
+        <div class="lang-menu" id="langMenu" role="listbox" aria-label="Choose language">
+          <button type="button" class="lang-option" data-value="en" role="option"><span>English</span><small>EN</small></button>
+          <button type="button" class="lang-option" data-value="pl" role="option"><span>Polski</span><small>PL</small></button>
+          <button type="button" class="lang-option" data-value="de" role="option"><span>Deutsch</span><small>DE</small></button>
+          <button type="button" class="lang-option" data-value="es" role="option"><span>Español</span><small>ES</small></button>
+          <button type="button" class="lang-option" data-value="pt" role="option"><span>Português</span><small>PT</small></button>
+          <button type="button" class="lang-option" data-value="fr" role="option"><span>Français</span><small>FR</small></button>
+          <button type="button" class="lang-option" data-value="ru" role="option"><span>Русский</span><small>RU</small></button>
+          <button type="button" class="lang-option" data-value="zh" role="option"><span>中文</span><small>ZH</small></button>
+          <button type="button" class="lang-option" data-value="ar" role="option"><span>العربية</span><small>AR</small></button>
+        </div>
+      </div>
+      <button type="button" class="btn btn-ghost" id="openAuthBtn">Log In</button>
       <a href="#download" class="btn btn-primary">
         <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 16l-4-4h2.5V4h3v8H16l-4 4z"/><path d="M4 20h16"/></svg>
         Get the App
       </a>
+      <div class="auth-user-badge" id="authUserBadge">
+        <span class="auth-user-dot"></span>
+        <span id="authUserText">Signed in</span>
+      </div>
     </div>
   </div>
 </nav>
@@ -1524,6 +2082,87 @@ body::before{
   </div>
 </section>
 
+
+<!-- ── CONTACT ── -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="badge">Contact</span>
+      <h2>Talk to the FundMind team</h2>
+      <p>Want a demo, partnership, early access, or a business conversation? Send a message and we will get back to you at <strong>contact@fundmindapp.com</strong>.</p>
+    </div>
+    <div class="contact-shell">
+      <div class="contact-card reveal">
+        <span class="contact-kicker">Business contact</span>
+        <h3 class="contact-title">Built for people who want one serious finance system for fiat and crypto.</h3>
+        <p class="contact-copy">Use the form to send a quick inquiry from your device. On static hosting this opens your default mail app with all fields prefilled, so you can send it straight to the FundMind inbox.</p>
+
+        <div class="contact-points">
+          <div class="contact-point">
+            <span class="contact-point-label">Email</span>
+            <a href="mailto:contact@fundmindapp.com">contact@fundmindapp.com</a>
+            <p>Main inbox for product, partnerships, media, and investor conversations.</p>
+          </div>
+          <div class="contact-point">
+            <span class="contact-point-label">Website</span>
+            <strong>www.fundmindapp.com</strong>
+            <p>Official landing page for FundMind DualFi AI.</p>
+          </div>
+          <div class="contact-point">
+            <span class="contact-point-label">Reply window</span>
+            <strong>Usually within 24h</strong>
+            <p>Best for product questions, premium access, and launch inquiries.</p>
+          </div>
+          <div class="contact-point">
+            <span class="contact-point-label">Use cases</span>
+            <strong>Demo • Partnership • Support</strong>
+            <p>Founders, users, affiliates, and B2B leads are all welcome.</p>
+          </div>
+        </div>
+
+        <p class="contact-note">Need a direct message instead of the form? Write straight to <a class="contact-alt-link" href="mailto:contact@fundmindapp.com">contact@fundmindapp.com</a>.</p>
+      </div>
+
+      <div class="contact-form-card reveal d1">
+        <form class="contact-form" id="contactForm">
+          <div class="contact-grid">
+            <div class="contact-field">
+              <label for="cf-name">Name</label>
+              <input id="cf-name" name="name" type="text" placeholder="Your name" required />
+            </div>
+            <div class="contact-field">
+              <label for="cf-email">Email</label>
+              <input id="cf-email" name="email" type="email" placeholder="you@company.com" required />
+            </div>
+          </div>
+
+          <div class="contact-grid">
+            <div class="contact-field">
+              <label for="cf-company">Company</label>
+              <input id="cf-company" name="company" type="text" placeholder="Optional" />
+            </div>
+            <div class="contact-field">
+              <label for="cf-subject">Subject</label>
+              <input id="cf-subject" name="subject" type="text" placeholder="Demo, partnership, support..." required />
+            </div>
+          </div>
+
+          <div class="contact-field">
+            <label for="cf-message">Message</label>
+            <textarea id="cf-message" name="message" placeholder="Tell us what you need and how FundMind can help." required></textarea>
+          </div>
+
+          <div class="contact-actions">
+            <button type="submit" class="btn btn-primary contact-submit">Send message</button>
+            <span class="contact-helper">This form opens your default mail app with a ready-to-send message to <strong>contact@fundmindapp.com</strong>.</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 <!-- ── FOOTER ── -->
 <footer>
   <div class="container">
@@ -1537,6 +2176,7 @@ body::before{
           <span class="logo-text">FundMind <span style="font-size:13px;letter-spacing:2px;opacity:0.72;font-weight:700">DualFi AI</span></span>
         </div>
         <p>AI-powered personal finance for iOS &amp; Android. 60+ modules, 9 languages, crypto + fiat in one app.</p>
+        <p style="margin-top:10px"><a href="mailto:contact@fundmindapp.com" style="color:var(--teal);font-weight:700">contact@fundmindapp.com</a></p>
       </div>
       <div class="footer-col">
         <h4>Product</h4>
@@ -1552,7 +2192,7 @@ body::before{
         <a href="#">Blog</a>
         <a href="#">Roadmap</a>
         <a href="#">Careers</a>
-        <a href="#">Contact</a>
+        <a href="#contact">Contact</a>
       </div>
       <div class="footer-col">
         <h4>Legal</h4>
@@ -1569,11 +2209,82 @@ body::before{
         <a href="#" class="social-btn" title="Twitter/X">𝕏</a>
         <a href="#" class="social-btn" title="LinkedIn">in</a>
         <a href="#" class="social-btn" title="Instagram">◎</a>
-        <a href="#" class="social-btn" title="GitHub">⌥</a>
+        <a href="mailto:contact@fundmindapp.com" class="social-btn" title="Email">✉</a>
       </div>
     </div>
   </div>
 </footer>
+
+<div class="auth-backdrop" id="authBackdrop"></div>
+<div class="auth-modal" id="authModal" aria-hidden="true">
+  <div class="auth-shell">
+    <div class="auth-side">
+      <span class="contact-kicker" id="authKicker">FundMind account</span>
+      <h3 id="authHeadline">Create your account and keep everything in one finance command center.</h3>
+      <p id="authCopy">This version includes a working front-end account layer in the browser, dark premium forms, and a direct contact flow to the FundMind inbox.</p>
+      <ul>
+        <li><span>✓</span><div id="authBenefit1">Create an account in seconds</div></li>
+        <li><span>✓</span><div id="authBenefit2">Sign in again on this device</div></li>
+        <li><span>✓</span><div id="authBenefit3">Send business inquiries straight to FundMind</div></li>
+      </ul>
+    </div>
+    <div class="auth-main">
+      <div class="auth-top">
+        <div class="auth-tabs">
+          <button type="button" class="auth-tab active" data-auth-tab="signup" id="tabSignup">Create account</button>
+          <button type="button" class="auth-tab" data-auth-tab="login" id="tabLogin">Log in</button>
+        </div>
+        <button type="button" class="auth-close" id="closeAuthBtn" aria-label="Close">×</button>
+      </div>
+      <div class="auth-panel active" id="panelSignup">
+        <div class="auth-grid">
+          <div class="auth-field">
+            <label for="signupFirst" id="labelFirstName">First name</label>
+            <input class="auth-input" id="signupFirst" type="text" placeholder="Tomasz"/>
+          </div>
+          <div class="auth-field">
+            <label for="signupLast" id="labelLastName">Last name</label>
+            <input class="auth-input" id="signupLast" type="text" placeholder="Klimczyk"/>
+          </div>
+        </div>
+        <div class="auth-field">
+          <label for="signupEmail" id="labelEmail">Email</label>
+          <input class="auth-input" id="signupEmail" type="email" placeholder="contact@fundmindapp.com"/>
+        </div>
+        <div class="auth-grid">
+          <div class="auth-field">
+            <label for="signupPassword" id="labelPassword">Password</label>
+            <input class="auth-input" id="signupPassword" type="password" placeholder="Minimum 8 characters"/>
+          </div>
+          <div class="auth-field">
+            <label for="signupEntity" id="labelUseCase">Use case</label>
+            <input class="auth-input" id="signupEntity" type="text" placeholder="Personal, company, investor"/>
+          </div>
+        </div>
+        <div class="auth-row">
+          <button type="button" class="auth-submit" id="signupSubmit">Create account</button>
+          <div class="auth-status" id="signupStatus"></div>
+        </div>
+      </div>
+      <div class="auth-panel" id="panelLogin">
+        <div class="auth-field">
+          <label for="loginEmail" id="labelLoginEmail">Email</label>
+          <input class="auth-input" id="loginEmail" type="email" placeholder="contact@fundmindapp.com"/>
+        </div>
+        <div class="auth-field">
+          <label for="loginPassword" id="labelLoginPassword">Password</label>
+          <input class="auth-input" id="loginPassword" type="password" placeholder="Your password"/>
+        </div>
+        <div class="auth-row">
+          <button type="button" class="auth-submit secondary" id="loginSubmit">Log in</button>
+          <div class="auth-status" id="loginStatus"></div>
+        </div>
+        <p class="auth-note" id="authLocalNote">Accounts created here work on this browser and device. For full production accounts across devices, connect a real auth backend later.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
 /* ══════════════════════════════════════════
@@ -1818,6 +2529,387 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
     if(target){ e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
   });
 });
+
+/* CONTACT FORM -> MAILTO */
+(function(){
+  const form = document.getElementById('contactForm');
+  if(!form) return;
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = form.querySelector('[name="name"]').value.trim();
+    const email = form.querySelector('[name="email"]').value.trim();
+    const company = form.querySelector('[name="company"]').value.trim();
+    const subject = form.querySelector('[name="subject"]').value.trim();
+    const message = form.querySelector('[name="message"]').value.trim();
+
+    const lines = [
+      'Name: ' + name,
+      'Email: ' + email,
+      company ? 'Company: ' + company : null,
+      '',
+      message
+    ].filter(Boolean).join('\n');
+
+    const mailto = 'mailto:contact@fundmindapp.com'
+      + '?subject=' + encodeURIComponent('[FundMind Website] ' + subject)
+      + '&body=' + encodeURIComponent(lines);
+
+    window.location.href = mailto;
+  });
+})();
+
 </script>
+
+<script>
+(function(){
+  const translations = {
+    pl: {
+      "Features":"Funkcje","How it works":"Jak to działa","AI Advisor":"Doradca AI","Pricing":"Cennik","Languages":"Języki","Log In":"Zaloguj","Get the App":"Pobierz aplikację","Now on iOS & Android":"Już na iOS i Androidzie","60+ Modules":"60+ modułów","Your money,":"Twoje pieniądze,","AI-powered":"napędzane AI","intelligence":"inteligencja","FundMind combines real-time AI advice, crypto + fiat tracking, bank auto-sync, DeFi analytics, and 60+ financial tools — in one beautifully designed app.":"FundMind łączy doradztwo AI w czasie rzeczywistym, śledzenie krypto i fiat, automatyczną synchronizację banków, analitykę DeFi i ponad 60 narzędzi finansowych w jednej dopracowanej aplikacji.","Download on the":"Pobierz w","App Store":"App Store","Get it on":"Pobierz z","Google Play":"Google Play","🔒 End-to-end encrypted":"🔒 Szyfrowanie end-to-end","🇵🇱 Made in Poland":"🇵🇱 Stworzone w Polsce","Net Worth":"Wartość netto","↑ +3.4% this month":"↑ +3,4% w tym miesiącu","Cash Flow":"Przepływ gotówki","Expenses":"Wydatki","Crypto":"Krypto","Housing costs exceed 40% of income. Consider refinancing — saves ~340 PLN/month. 💡":"Koszty mieszkania przekraczają 40% dochodu. Rozważ refinansowanie — oszczędność około 340 PLN miesięcznie. 💡","Live Crypto":"Krypto na żywo","Everything your money deserves":"Wszystko, na co zasługują Twoje pieniądze","From daily expense tracking to DeFi yield farming — FundMind covers every corner of your financial universe.":"Od codziennego śledzenia wydatków po yield farming w DeFi — FundMind obejmuje każdy obszar Twojego świata finansów.","Domain-aware AI for fiat and crypto. Natural language, 9 languages, full financial context. Asks Claude-powered intelligence — not generic chatbot replies.":"AI rozumiejące finanse fiat i krypto. Język naturalny, 9 języków i pełny kontekst finansowy. To inteligencja wspierana przez Claude, a nie ogólne odpowiedzi chatbota.","Claude AI":"Claude AI","Seamlessly switch between traditional finances and Web3. Live prices via CoinGecko, DeFi positions, staking rewards, NFT management — all in one tap.":"Płynnie przełączaj się między tradycyjnymi finansami a Web3. Kursy na żywo z CoinGecko, pozycje DeFi, nagrody stakingowe i zarządzanie NFT — wszystko w jednym miejscu.","Live via CoinGecko":"Na żywo przez CoinGecko","Open Banking connection with smart transaction classification, AI-powered deduplication engine, and a full review queue — imports in seconds, not hours.":"Połączenie z Open Banking, inteligentna klasyfikacja transakcji, silnik deduplikacji AI i pełna kolejka weryfikacji — import w sekundy, a nie godziny.","Open Banking":"Open Banking","Spending breakdowns, net worth evolution, FIRE calculator, spend velocity tracker, merchant analytics, benchmark vs national averages — visual and instant.":"Podział wydatków, rozwój wartości netto, kalkulator FIRE, tempo wydatków, analityka sprzedawców i porównanie do średnich krajowych — wizualnie i natychmiast.","20+ Chart Types":"20+ typów wykresów","Scan receipts, invoices, and contracts with your camera. AI extracts amounts, dates, vendors, VAT — zero manual entry. Receipt vault with warranty alerts.":"Skanuj paragony, faktury i umowy aparatem. AI wyciąga kwoty, daty, sprzedawców i VAT — bez ręcznego wpisywania. Archiwum dokumentów z alertami gwarancyjnymi.","Vision AI":"Vision AI","Real-time anomaly detection across all transactions. Foreign transactions, duplicate detection, unusual hours, new device alerts — security score with toggle rules.":"Wykrywanie anomalii w czasie rzeczywistym dla wszystkich transakcji. Operacje zagraniczne, duplikaty, nietypowe godziny i nowe urządzenia — wraz z oceną bezpieczeństwa i regułami.","NEW":"NOWOŚĆ","Manage personal, JDG, sp. z o.o., and investment entities separately or in a consolidated view. Entity-scoped transactions, reports, and tax profiles.":"Zarządzaj osobno lub łącznie finansami osobistymi, JDG, sp. z o.o. i inwestycjami. Transakcje, raporty i profile podatkowe per podmiot.","Business Ready":"Gotowe dla biznesu","Real-time exchange rates for 30+ currencies. Track PLN, EUR, USD, BTC simultaneously. AI FX analysis, rate alerts, and automatic base-currency conversion.":"Kursy na żywo dla ponad 30 walut. Śledź jednocześnie PLN, EUR, USD i BTC. Analiza FX AI, alerty kursowe i automatyczne przeliczanie waluty bazowej.","30+ Currencies":"30+ walut","Life events planner (house, wedding, baby, retirement), FIRE calculator with Lean/Regular/Fat strategies, savings rules automation, debt snowball/avalanche planner.":"Planer wydarzeń życiowych (dom, ślub, dziecko, emerytura), kalkulator FIRE ze strategiami Lean/Regular/Fat, automatyzacja oszczędzania i plan spłaty długów.","FIRE Ready":"Gotowe na FIRE","How It Works":"Jak to działa","Get your complete financial picture in minutes — no spreadsheets, no manual data entry.":"Zobacz pełny obraz swoich finansów w kilka minut — bez arkuszy i ręcznego wpisywania danych.","Download & Set Up":"Pobierz i skonfiguruj","Create your profile, choose your entity type (personal, business, investor) and preferred theme.":"Utwórz profil, wybierz typ podmiotu (osobisty, biznes, inwestor) i preferowany motyw.","Connect Your Accounts":"Połącz swoje konta","Link bank accounts via Open Banking or import CSVs. Add crypto wallets for portfolio tracking.":"Połącz konta bankowe przez Open Banking albo importuj CSV. Dodaj portfele krypto do śledzenia portfela.","AI Analyses Everything":"AI analizuje wszystko","FundMind Advisor scans your transactions, goals, taxes, and alerts — delivering instant insights.":"FundMind Advisor analizuje transakcje, cele, podatki i alerty, dostarczając natychmiastowe wnioski.","Take Control":"Przejmij kontrolę","Set budgets, automate savings rules, track investments, and never miss a tax deadline again.":"Ustaw budżety, automatyzuj oszczędzanie, śledź inwestycje i nie przegap już żadnego terminu podatkowego.","A module for every financial need":"Moduł na każdą potrzebę finansową","From crypto gas tracker to household budgeting — whatever you need, FundMind has it.":"Od śledzenia opłat gas po budżet domowy — czegokolwiek potrzebujesz, FundMind to ma.","Your personal finance intelligence layer":"Twoja warstwa inteligencji finansowej","Online · Analysing your data":"Online · Analiza Twoich danych","You How can I save more money this month?":"Ty: Jak mogę w tym miesiącu oszczędzić więcej?","+180 PLN/month":"+180 PLN miesięcznie","You How is my crypto doing vs the market?":"Ty: Jak moje krypto wypada na tle rynku?","FundMind Advisor analyses your entire financial picture — transactions, goals, crypto, taxes, loans, subscriptions — and delivers actionable insights in real time.":"FundMind Advisor analizuje cały Twój obraz finansów — transakcje, cele, krypto, podatki, kredyty i subskrypcje — i daje praktyczne wskazówki w czasie rzeczywistym.","Ask in your language. The AI understands your full context, not just generic personal finance platitudes. Domain-aware for both fiat and crypto.":"Pytaj w swoim języku. AI rozumie pełny kontekst, a nie tylko ogólne porady finansowe. Zna zarówno świat fiat, jak i krypto.","Fiat + Crypto Domain":"Fiat + Krypto","Natural Language":"Język naturalny","9 Languages":"9 języków","Offline Fallback":"Tryb offline","Full Context Aware":"Pełny kontekst","Claude AI Powered":"Napędzane przez Claude AI","Your data is yours, always":"Twoje dane zawsze należą do Ciebie","Bank-grade security built in from the ground up. Your finances are private — not a product.":"Zabezpieczenia klasy bankowej wbudowane od podstaw. Twoje finanse są prywatne, a nie produktem.","All financial data encrypted with AES-256 at rest and in transit. Keys stored locally on your device — we cannot read your data.":"Wszystkie dane finansowe są szyfrowane AES-256 w spoczynku i w transmisji. Klucze są przechowywane lokalnie na Twoim urządzeniu — nie możemy czytać Twoich danych.","Face ID, Touch ID, and fingerprint lock on every app open. Optional PIN fallback. Auto-locks on background with configurable timeout.":"Face ID, Touch ID i blokada odciskiem palca przy każdym otwarciu aplikacji. Opcjonalny PIN awaryjny. Automatyczna blokada po przejściu do tła.","Real-time anomaly detection for foreign transactions, duplicate charges, unusual spending hours, and new device logins.":"Wykrywanie anomalii w czasie rzeczywistym dla transakcji zagranicznych, duplikatów, nietypowych godzin wydatków i logowań z nowych urządzeń.","Full GDPR compliance — data export, deletion on request, no third-party data selling, minimal permission model.":"Pełna zgodność z RODO — eksport danych, usunięcie na żądanie, brak sprzedaży danych stronom trzecim i minimalny model uprawnień.","Loved by users worldwide":"Lubiane przez użytkowników na całym świecie","Real feedback from people managing their finances with FundMind every day.":"Prawdziwe opinie osób, które codziennie zarządzają finansami z FundMind.","Invest in your financial future":"Zainwestuj w swoją finansową przyszłość","Start free forever. Unlock the full power when you're ready. No hidden fees, cancel anytime.":"Zacznij za darmo na zawsze. Odblokuj pełnię możliwości, kiedy zechcesz. Bez ukrytych opłat, anuluj w dowolnym momencie.","Monthly":"Miesięcznie","Annual":"Rocznie","Save 20%":"Oszczędź 20%","Free":"Darmowy","Forever free":"Zawsze za darmo","per month":"miesięcznie","Get Started Free":"Zacznij za darmo","Most Popular":"Najpopularniejszy","Premium":"Premium","Start 14-Day Free Trial":"Rozpocznij 14-dniowy okres próbny","Pro":"Pro","Get Pro":"Wybierz Pro","Global":"Globalnie","Speaks your language":"Mówi w Twoim języku","Every screen, notification, AI response, and insight is fully localised — including right-to-left Arabic.":"Każdy ekran, powiadomienie, odpowiedź AI i insight są w pełni zlokalizowane — także z prawostronnym arabskim.","4,500+ translation keys · AI responses adapt to your language automatically":"Ponad 4500 kluczy tłumaczeń · odpowiedzi AI automatycznie dopasowują się do Twojego języka","Start managing your money the intelligent way":"Zacznij zarządzać pieniędzmi w inteligentny sposób","Free forever plan. Premium from 29 PLN/month. 14-day free trial. No credit card required.":"Plan darmowy na zawsze. Premium od 29 PLN miesięcznie. 14 dni za darmo. Bez karty płatniczej.","✓ GDPR Compliant":"✓ Zgodne z RODO","Contact":"Kontakt","Talk to the FundMind team":"Porozmawiaj z zespołem FundMind","Want a demo, partnership, early access, or a business conversation? Send a message and we will get back to you at":"Chcesz demo, partnerstwo, wcześniejszy dostęp albo rozmowę biznesową? Wyślij wiadomość, a odezwiemy się na","Business contact":"Kontakt biznesowy","Built for people who want one serious finance system for fiat and crypto.":"Stworzone dla osób, które chcą jednego poważnego systemu finansowego dla fiat i krypto.","Use the form to send a quick inquiry from your device. On static hosting this opens your default mail app with all fields prefilled, so you can send it straight to the FundMind inbox.":"Użyj formularza, żeby szybko wysłać zapytanie z urządzenia. Na hostingu statycznym otworzy on domyślną aplikację pocztową z uzupełnioną treścią, gotową do wysłania do skrzynki FundMind.","Email":"E-mail","Main inbox for product, partnerships, media, and investor conversations.":"Główna skrzynka do rozmów o produkcie, partnerstwach, mediach i inwestorach.","Website":"Strona","Official landing page for FundMind DualFi AI.":"Oficjalny landing page FundMind DualFi AI.","Reply window":"Czas odpowiedzi","Usually within 24h":"Zwykle w 24h","Best for product questions, premium access, and launch inquiries.":"Najlepsze miejsce do pytań o produkt, dostęp premium i start aplikacji.","Use cases":"Zastosowania","Demo • Partnership • Support":"Demo • Partnerstwo • Wsparcie","Founders, users, affiliates, and B2B leads are all welcome.":"Zapraszamy founderów, użytkowników, afiliantów i leady B2B.","Need a direct message instead of the form? Write straight to":"Wolisz napisać bezpośrednio zamiast używać formularza? Napisz na","Name":"Imię","Your name":"Twoje imię","Company":"Firma","Optional":"Opcjonalnie","Subject":"Temat","Demo, partnership, support...":"Demo, partnerstwo, wsparcie...","Message":"Wiadomość","Tell us what you need and how FundMind can help.":"Napisz, czego potrzebujesz i jak FundMind może pomóc.","Send message":"Wyślij wiadomość","This form opens your default mail app with a ready-to-send message to":"Ten formularz otwiera domyślną aplikację pocztową z gotową wiadomością do","All rights reserved. Made with ♥ in Poland.":"Wszelkie prawa zastrzeżone. Stworzone z ♥ w Polsce.","About":"O nas","Download":"Pobierz","Roadmap":"Roadmapa","Careers":"Kariera","Privacy Policy":"Polityka prywatności","Terms of Service":"Warunki korzystania","Cookie Policy":"Polityka cookies","Security":"Bezpieczeństwo"},
+    de: {"Features":"Funktionen","How it works":"So funktioniert es","AI Advisor":"KI-Berater","Pricing":"Preise","Languages":"Sprachen","Log In":"Anmelden","Get the App":"App holen","Now on iOS & Android":"Jetzt für iOS und Android","60+ Modules":"60+ Module","Your money,":"Dein Geld,","AI-powered":"KI-gestützte","intelligence":"Intelligenz","FundMind combines real-time AI advice, crypto + fiat tracking, bank auto-sync, DeFi analytics, and 60+ financial tools — in one beautifully designed app.":"FundMind vereint KI-Beratung in Echtzeit, Krypto- und Fiat-Tracking, automatische Banksynchronisierung, DeFi-Analysen und über 60 Finanzwerkzeuge in einer durchdachten App.","Download on the":"Laden im","Get it on":"Erhältlich bei","🔒 End-to-end encrypted":"🔒 Ende-zu-Ende verschlüsselt","🇵🇱 Made in Poland":"🇵🇱 Entwickelt in Polen","Net Worth":"Nettovermögen","↑ +3.4% this month":"↑ +3,4% diesen Monat","Cash Flow":"Cashflow","Expenses":"Ausgaben","Crypto":"Krypto","Everything your money deserves":"Alles, was dein Geld verdient","From daily expense tracking to DeFi yield farming — FundMind covers every corner of your financial universe.":"Von täglicher Ausgabenkontrolle bis zu DeFi-Yield-Farming deckt FundMind jeden Bereich deiner Finanzwelt ab.","How It Works":"So funktioniert es","A module for every financial need":"Ein Modul für jeden Finanzbedarf","Your personal finance intelligence layer":"Deine intelligente Finanzschicht","Your data is yours, always":"Deine Daten gehören immer dir","Loved by users worldwide":"Weltweit von Nutzern geschätzt","Invest in your financial future":"Investiere in deine finanzielle Zukunft","Monthly":"Monatlich","Annual":"Jährlich","Save 20%":"20% sparen","Free":"Kostenlos","Forever free":"Für immer kostenlos","per month":"pro Monat","Get Started Free":"Kostenlos starten","Most Popular":"Am beliebtesten","Start 14-Day Free Trial":"14 Tage kostenlos testen","Get Pro":"Pro holen","Global":"Global","Speaks your language":"Spricht deine Sprache","Start managing your money the intelligent way":"Verwalte dein Geld auf intelligente Weise","Contact":"Kontakt","Talk to the FundMind team":"Sprich mit dem FundMind-Team","Business contact":"Geschäftskontakt","Email":"E-Mail","Website":"Website","Reply window":"Antwortzeit","Use cases":"Anwendungsfälle","Name":"Name","Company":"Unternehmen","Optional":"Optional","Subject":"Betreff","Message":"Nachricht","Send message":"Nachricht senden","All rights reserved. Made with ♥ in Poland.":"Alle Rechte vorbehalten. Mit ♥ in Polen gemacht."},
+    es: {"Features":"Funciones","How it works":"Cómo funciona","AI Advisor":"Asesor IA","Pricing":"Precios","Languages":"Idiomas","Log In":"Iniciar sesión","Get the App":"Descargar app","Now on iOS & Android":"Ya en iOS y Android","60+ Modules":"Más de 60 módulos","Your money,":"Tu dinero,","AI-powered":"impulsado por IA","intelligence":"inteligencia","FundMind combines real-time AI advice, crypto + fiat tracking, bank auto-sync, DeFi analytics, and 60+ financial tools — in one beautifully designed app.":"FundMind combina asesoría con IA en tiempo real, seguimiento de cripto y fiat, sincronización bancaria automática, analítica DeFi y más de 60 herramientas financieras en una sola app.","Download on the":"Descárgalo en","Get it on":"Consíguelo en","🔒 End-to-end encrypted":"🔒 Cifrado de extremo a extremo","🇵🇱 Made in Poland":"🇵🇱 Hecho en Polonia","Net Worth":"Patrimonio neto","↑ +3.4% this month":"↑ +3,4% este mes","Cash Flow":"Flujo de caja","Expenses":"Gastos","Crypto":"Cripto","Everything your money deserves":"Todo lo que tu dinero merece","How It Works":"Cómo funciona","A module for every financial need":"Un módulo para cada necesidad financiera","Your personal finance intelligence layer":"Tu capa inteligente de finanzas personales","Your data is yours, always":"Tus datos son tuyos, siempre","Loved by users worldwide":"Amado por usuarios de todo el mundo","Invest in your financial future":"Invierte en tu futuro financiero","Monthly":"Mensual","Annual":"Anual","Save 20%":"Ahorra 20%","Free":"Gratis","Forever free":"Gratis para siempre","per month":"por mes","Get Started Free":"Empieza gratis","Most Popular":"Más popular","Start 14-Day Free Trial":"Empieza prueba de 14 días","Get Pro":"Obtener Pro","Global":"Global","Speaks your language":"Habla tu idioma","Start managing your money the intelligent way":"Empieza a gestionar tu dinero de forma inteligente","Contact":"Contacto","Talk to the FundMind team":"Habla con el equipo de FundMind","Business contact":"Contacto de negocio","Email":"Correo","Website":"Sitio web","Reply window":"Tiempo de respuesta","Use cases":"Casos de uso","Name":"Nombre","Company":"Empresa","Optional":"Opcional","Subject":"Asunto","Message":"Mensaje","Send message":"Enviar mensaje","All rights reserved. Made with ♥ in Poland.":"Todos los derechos reservados. Hecho con ♥ en Polonia."},
+    pt: {"Features":"Funcionalidades","How it works":"Como funciona","AI Advisor":"Consultor IA","Pricing":"Preços","Languages":"Idiomas","Log In":"Entrar","Get the App":"Baixar app","Now on iOS & Android":"Agora no iOS e Android","60+ Modules":"60+ módulos","Your money,":"Seu dinheiro,","AI-powered":"movido por IA","intelligence":"inteligência","Everything your money deserves":"Tudo o que seu dinheiro merece","How It Works":"Como funciona","A module for every financial need":"Um módulo para cada necessidade financeira","Your personal finance intelligence layer":"Sua camada de inteligência financeira pessoal","Your data is yours, always":"Seus dados são seus, sempre","Loved by users worldwide":"Amado por usuários no mundo todo","Invest in your financial future":"Invista no seu futuro financeiro","Monthly":"Mensal","Annual":"Anual","Save 20%":"Economize 20%","Free":"Grátis","Forever free":"Grátis para sempre","per month":"por mês","Get Started Free":"Começar grátis","Most Popular":"Mais popular","Start 14-Day Free Trial":"Iniciar teste grátis de 14 dias","Get Pro":"Obter Pro","Global":"Global","Speaks your language":"Fala a sua língua","Start managing your money the intelligent way":"Comece a gerir seu dinheiro com inteligência","Contact":"Contato","Talk to the FundMind team":"Fale com a equipe FundMind","Business contact":"Contato comercial","Email":"E-mail","Website":"Site","Reply window":"Prazo de resposta","Use cases":"Casos de uso","Name":"Nome","Company":"Empresa","Optional":"Opcional","Subject":"Assunto","Message":"Mensagem","Send message":"Enviar mensagem","All rights reserved. Made with ♥ in Poland.":"Todos os direitos reservados. Feito com ♥ na Polônia."},
+    fr: {"Features":"Fonctionnalités","How it works":"Comment ça marche","AI Advisor":"Conseiller IA","Pricing":"Tarifs","Languages":"Langues","Log In":"Connexion","Get the App":"Télécharger l’app","Now on iOS & Android":"Disponible sur iOS et Android","60+ Modules":"60+ modules","Your money,":"Votre argent,","AI-powered":"propulsé par l’IA","intelligence":"intelligence","Everything your money deserves":"Tout ce que votre argent mérite","How It Works":"Comment ça marche","A module for every financial need":"Un module pour chaque besoin financier","Your personal finance intelligence layer":"Votre couche d’intelligence financière personnelle","Your data is yours, always":"Vos données vous appartiennent, toujours","Loved by users worldwide":"Adopté par des utilisateurs du monde entier","Invest in your financial future":"Investissez dans votre avenir financier","Monthly":"Mensuel","Annual":"Annuel","Save 20%":"Économisez 20%","Free":"Gratuit","Forever free":"Gratuit pour toujours","per month":"par mois","Get Started Free":"Commencer gratuitement","Most Popular":"Le plus populaire","Start 14-Day Free Trial":"Essai gratuit 14 jours","Get Pro":"Passer à Pro","Global":"Global","Speaks your language":"Parle votre langue","Start managing your money the intelligent way":"Commencez à gérer votre argent intelligemment","Contact":"Contact","Talk to the FundMind team":"Parlez à l’équipe FundMind","Business contact":"Contact pro","Email":"E-mail","Website":"Site web","Reply window":"Délai de réponse","Use cases":"Cas d’usage","Name":"Nom","Company":"Entreprise","Optional":"Optionnel","Subject":"Objet","Message":"Message","Send message":"Envoyer le message","All rights reserved. Made with ♥ in Poland.":"Tous droits réservés. Fait avec ♥ en Pologne."},
+    ru: {"Features":"Возможности","How it works":"Как это работает","AI Advisor":"ИИ-советник","Pricing":"Тарифы","Languages":"Языки","Log In":"Войти","Get the App":"Скачать приложение","Now on iOS & Android":"Уже на iOS и Android","60+ Modules":"60+ модулей","Your money,":"Ваши деньги,","AI-powered":"на базе ИИ","intelligence":"интеллект","Everything your money deserves":"Всё, чего заслуживают ваши деньги","How It Works":"Как это работает","A module for every financial need":"Модуль для любой финансовой задачи","Your personal finance intelligence layer":"Ваш интеллектуальный слой личных финансов","Your data is yours, always":"Ваши данные всегда принадлежат вам","Loved by users worldwide":"Любим пользователями по всему миру","Invest in your financial future":"Инвестируйте в своё финансовое будущее","Monthly":"Ежемесячно","Annual":"Ежегодно","Save 20%":"Экономия 20%","Free":"Бесплатно","Forever free":"Бесплатно навсегда","per month":"в месяц","Get Started Free":"Начать бесплатно","Most Popular":"Самый популярный","Start 14-Day Free Trial":"Начать 14-дневный пробный период","Get Pro":"Выбрать Pro","Global":"Глобально","Speaks your language":"Говорит на вашем языке","Start managing your money the intelligent way":"Начните управлять деньгами умно","Contact":"Контакты","Talk to the FundMind team":"Связаться с командой FundMind","Business contact":"Бизнес-контакт","Email":"E-mail","Website":"Сайт","Reply window":"Срок ответа","Use cases":"Сценарии","Name":"Имя","Company":"Компания","Optional":"Необязательно","Subject":"Тема","Message":"Сообщение","Send message":"Отправить сообщение","All rights reserved. Made with ♥ in Poland.":"Все права защищены. Сделано с ♥ в Польше."},
+    zh: {"Features":"功能","How it works":"使用方式","AI Advisor":"AI 顾问","Pricing":"价格","Languages":"语言","Log In":"登录","Get the App":"获取应用","Now on iOS & Android":"现已支持 iOS 和 Android","60+ Modules":"60+ 模块","Your money,":"你的财富，","AI-powered":"AI 驱动的","intelligence":"智能","Everything your money deserves":"你的财富值得拥有的一切","How It Works":"如何运作","A module for every financial need":"满足每种财务需求的模块","Your personal finance intelligence layer":"你的个人财务智能层","Your data is yours, always":"你的数据永远属于你","Loved by users worldwide":"受到全球用户喜爱","Invest in your financial future":"投资你的财务未来","Monthly":"月付","Annual":"年付","Save 20%":"省 20%","Free":"免费","Forever free":"永久免费","per month":"每月","Get Started Free":"免费开始","Most Popular":"最受欢迎","Start 14-Day Free Trial":"开始 14 天免费试用","Get Pro":"升级 Pro","Global":"全球化","Speaks your language":"支持你的语言","Start managing your money the intelligent way":"以更智能的方式管理你的资金","Contact":"联系","Talk to the FundMind team":"联系 FundMind 团队","Business contact":"商务联系","Email":"邮箱","Website":"官网","Reply window":"回复时间","Use cases":"适用场景","Name":"姓名","Company":"公司","Optional":"可选","Subject":"主题","Message":"留言","Send message":"发送消息","All rights reserved. Made with ♥ in Poland.":"版权所有。于波兰用 ♥ 打造。"},
+    ar: {"Features":"المميزات","How it works":"كيف يعمل","AI Advisor":"المستشار الذكي","Pricing":"الأسعار","Languages":"اللغات","Log In":"تسجيل الدخول","Get the App":"حمّل التطبيق","Now on iOS & Android":"متوفر الآن على iOS وAndroid","60+ Modules":"أكثر من 60 وحدة","Your money,":"أموالك،","AI-powered":"مدعومة بالذكاء الاصطناعي","intelligence":"الذكية","FundMind combines real-time AI advice, crypto + fiat tracking, bank auto-sync, DeFi analytics, and 60+ financial tools — in one beautifully designed app.":"يجمع FundMind بين نصائح الذكاء الاصطناعي اللحظية، وتتبع العملات الرقمية والنقدية، والمزامنة البنكية التلقائية، وتحليلات DeFi، وأكثر من 60 أداة مالية في تطبيق واحد متقن.","Download on the":"حمّل من","Get it on":"متوفر على","🔒 End-to-end encrypted":"🔒 تشفير من الطرف إلى الطرف","🇵🇱 Made in Poland":"🇵🇱 صُنع في بولندا","Net Worth":"صافي الثروة","↑ +3.4% this month":"↑ +3.4% هذا الشهر","Cash Flow":"التدفق النقدي","Expenses":"المصروفات","Crypto":"العملات الرقمية","Everything your money deserves":"كل ما تستحقه أموالك","How It Works":"كيف يعمل","A module for every financial need":"وحدة لكل حاجة مالية","Your personal finance intelligence layer":"طبقة الذكاء المالي الشخصي الخاصة بك","Your data is yours, always":"بياناتك ملكك دائماً","Loved by users worldwide":"محبوب من المستخدمين حول العالم","Invest in your financial future":"استثمر في مستقبلك المالي","Monthly":"شهري","Annual":"سنوي","Save 20%":"وفّر 20%","Free":"مجاني","Forever free":"مجاني دائماً","per month":"شهرياً","Get Started Free":"ابدأ مجاناً","Most Popular":"الأكثر شعبية","Start 14-Day Free Trial":"ابدأ تجربة مجانية لمدة 14 يوماً","Get Pro":"احصل على Pro","Global":"عالمي","Speaks your language":"يتحدث لغتك","Start managing your money the intelligent way":"ابدأ إدارة أموالك بالطريقة الذكية","Contact":"تواصل","Talk to the FundMind team":"تحدث مع فريق FundMind","Business contact":"تواصل أعمال","Built for people who want one serious finance system for fiat and crypto.":"مصمم لمن يريد نظاماً مالياً جدياً واحداً للنقد والعملات الرقمية.","Email":"البريد الإلكتروني","Website":"الموقع","Reply window":"مدة الرد","Use cases":"حالات الاستخدام","Name":"الاسم","Company":"الشركة","Optional":"اختياري","Subject":"الموضوع","Message":"الرسالة","Send message":"إرسال الرسالة","All rights reserved. Made with ♥ in Poland.":"جميع الحقوق محفوظة. صُنع بـ ♥ في بولندا."}
+  };
+  const meta = {
+    en:{title:'FundMind DualFi AI — Finance Intelligence', description:'FundMind DualFi AI is a premium AI-powered personal finance app for iOS & Android. 60+ modules, crypto, DeFi, bank sync, multi-entity, 9 languages.'},
+    pl:{title:'FundMind DualFi AI — Inteligencja finansowa', description:'FundMind DualFi AI to premium aplikacja finansów osobistych z AI na iOS i Androida. 60+ modułów, krypto, DeFi, synchronizacja banków, wiele podmiotów i 9 języków.'},
+    de:{title:'FundMind DualFi AI — Finanzintelligenz', description:'FundMind DualFi AI ist eine Premium-Finanzapp mit KI für iOS und Android. 60+ Module, Krypto, DeFi, Banksync, Multi-Entity und 9 Sprachen.'},
+    es:{title:'FundMind DualFi AI — Inteligencia financiera', description:'FundMind DualFi AI es una app premium de finanzas personales con IA para iOS y Android. 60+ módulos, cripto, DeFi, sincronización bancaria, multi-entidad y 9 idiomas.'},
+    pt:{title:'FundMind DualFi AI — Inteligência financeira', description:'FundMind DualFi AI é um app premium de finanças pessoais com IA para iOS e Android. 60+ módulos, cripto, DeFi, sincronização bancária, múltiplas entidades e 9 idiomas.'},
+    fr:{title:'FundMind DualFi AI — Intelligence financière', description:'FundMind DualFi AI est une application premium de finances personnelles avec IA pour iOS et Android. 60+ modules, crypto, DeFi, synchro bancaire, multi-entité et 9 langues.'},
+    ru:{title:'FundMind DualFi AI — Финансовый интеллект', description:'FundMind DualFi AI — премиум-приложение для личных финансов с ИИ для iOS и Android. 60+ модулей, крипто, DeFi, синхронизация банков, несколько сущностей и 9 языков.'},
+    zh:{title:'FundMind DualFi AI — 金融智能', description:'FundMind DualFi AI 是一款面向 iOS 和 Android 的高端 AI 个人理财应用。60+ 模块、加密货币、DeFi、银行同步、多主体和 9 种语言。'},
+    ar:{title:'FundMind DualFi AI — الذكاء المالي', description:'FundMind DualFi AI هو تطبيق مالي شخصي مميز مدعوم بالذكاء الاصطناعي على iOS وAndroid. أكثر من 60 وحدة، كريبتو، DeFi، مزامنة بنكية، تعدد الكيانات و9 لغات.'}
+  };
+  const originalTextNodes=[];
+  const walker=document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode(node){
+      if(!node.parentElement) return NodeFilter.FILTER_REJECT;
+      const tag=node.parentElement.tagName;
+      if(['SCRIPT','STYLE','NOSCRIPT'].includes(tag)) return NodeFilter.FILTER_REJECT;
+      const txt=node.nodeValue;
+      if(!txt || !txt.trim()) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  while(walker.nextNode()){
+    const node=walker.currentNode;
+    originalTextNodes.push({node, text:node.nodeValue.trim()});
+  }
+  const placeholders=[];
+  document.querySelectorAll('[placeholder]').forEach(el=>placeholders.push({el,text:el.getAttribute('placeholder')}));
+  const langDropdown=document.getElementById('langDropdown');
+  const langTrigger=document.getElementById('langTrigger');
+  const langCurrent=document.getElementById('langCurrent');
+  const langOptions=[...document.querySelectorAll('.lang-option')];
+  const pills=[...document.querySelectorAll('.lang-pill')];
+  const codes=['pl','en','de','es','pt','fr','ru','zh','ar'];
+  const langLabels={en:'English',pl:'Polski',de:'Deutsch',es:'Español',pt:'Português',fr:'Français',ru:'Русский',zh:'中文',ar:'العربية'};
+  pills.forEach((pill,i)=>{pill.dataset.lang=codes[i]; pill.style.cursor='pointer'; pill.addEventListener('click',()=>setLang(codes[i]));});
+  langTrigger.addEventListener('click',()=>{
+    const isOpen=langDropdown.classList.toggle('open');
+    langTrigger.setAttribute('aria-expanded', String(isOpen));
+  });
+  langOptions.forEach(btn=>btn.addEventListener('click',()=>{
+    setLang(btn.dataset.value);
+    langDropdown.classList.remove('open');
+    langTrigger.setAttribute('aria-expanded','false');
+  }));
+  document.addEventListener('click',(e)=>{
+    if(!langDropdown.contains(e.target)){
+      langDropdown.classList.remove('open');
+      langTrigger.setAttribute('aria-expanded','false');
+    }
+  });
+  function translateText(text, lang){
+    if(lang==='en') return text;
+    return (translations[lang] && translations[lang][text]) || text;
+  }
+  function setLang(lang){
+    originalTextNodes.forEach(({node,text})=>{ node.nodeValue = node.nodeValue.replace(node.nodeValue.trim(), translateText(text,lang)); });
+    placeholders.forEach(({el,text})=> el.setAttribute('placeholder', translateText(text,lang)));
+    document.documentElement.lang=lang;
+    document.documentElement.dir=(lang==='ar'?'rtl':'ltr');
+    document.body.classList.toggle('rtl-lang',lang==='ar');
+    langCurrent.textContent=langLabels[lang]||'English';
+    langOptions.forEach(opt=>{
+      const active=opt.dataset.value===lang;
+      opt.classList.toggle('active', active);
+      opt.setAttribute('aria-selected', String(active));
+    });
+    pills.forEach(p=>{p.style.borderColor='rgba(255,255,255,.10)'; p.style.background='rgba(255,255,255,.03)';});
+    const active=document.querySelector('.lang-pill[data-lang="'+lang+'"]');
+    if(active){active.style.borderColor='rgba(139,92,246,.55)'; active.style.background='rgba(139,92,246,.10)';}
+    const m=meta[lang]||meta.en;
+    document.title=m.title;
+    const desc=document.querySelector('meta[name="description"]'); if(desc) desc.setAttribute('content',m.description);
+    const ogt=document.querySelector('meta[property="og:title"]'); if(ogt) ogt.setAttribute('content',m.title);
+    const ogd=document.querySelector('meta[property="og:description"]'); if(ogd) ogd.setAttribute('content',m.description);
+    try{localStorage.setItem('fundmind_site_lang',lang);}catch(e){}
+    window.currentFundMindLang = lang;
+    window.setFundMindLang = setLang;
+    document.dispatchEvent(new CustomEvent('fundmind:langchange',{detail:{lang}}));
+  }
+  const stored=(function(){try{return localStorage.getItem('fundmind_site_lang')}catch(e){return null}})();
+  setLang(stored||'en');
+})();
+</script>
+
+<script>
+(function(){
+  const ui = {
+    en: {
+      openAuth: 'Log In',
+      userSignedIn: 'Signed in',
+      authKicker:'FundMind account',
+      authHeadline:'Create your account and keep everything in one finance command center.',
+      authCopy:'This version includes a working front-end account layer in the browser, dark premium forms, and a direct contact flow to the FundMind inbox.',
+      authBenefit1:'Create an account in seconds',
+      authBenefit2:'Sign in again on this device',
+      authBenefit3:'Send business inquiries straight to FundMind',
+      tabSignup:'Create account',
+      tabLogin:'Log in',
+      firstName:'First name',
+      lastName:'Last name',
+      email:'Email',
+      password:'Password',
+      useCase:'Use case',
+      loginEmail:'Email',
+      loginPassword:'Password',
+      createAccount:'Create account',
+      login:'Log in',
+      authLocalNote:'Accounts created here work on this browser and device. For full production accounts across devices, connect a real auth backend later.',
+      signupOk:'Account created on this device.',
+      loginOk:'You are signed in.',
+      badLogin:'Wrong email or password.',
+      weakPassword:'Use at least 8 characters.',
+      missingFields:'Fill in all required fields.',
+      contactSending:'Sending…',
+      contactSuccess:'Message sent. Check your inbox if FormSubmit asks for one-time activation.',
+      contactFallback:'Direct sending is not available yet in this browser. Your mail app will open instead.',
+      contactError:'Could not send directly. Opening your mail app instead.',
+      sendMessage:'Send message',
+      logout:'Log out'
+    },
+    pl: {
+      openAuth: 'Zaloguj',
+      userSignedIn: 'Zalogowano',
+      authKicker:'Konto FundMind',
+      authHeadline:'Załóż konto i trzymaj wszystko w jednym centrum dowodzenia finansami.',
+      authCopy:'Ta wersja zawiera działającą warstwę konta w przeglądarce, ciemne premium formularze i bezpośredni kontakt ze skrzynką FundMind.',
+      authBenefit1:'Załóż konto w kilka sekund',
+      authBenefit2:'Zaloguj się ponownie na tym urządzeniu',
+      authBenefit3:'Wyślij zapytanie biznesowe prosto do FundMind',
+      tabSignup:'Załóż konto',
+      tabLogin:'Zaloguj',
+      firstName:'Imię',
+      lastName:'Nazwisko',
+      email:'E-mail',
+      password:'Hasło',
+      useCase:'Zastosowanie',
+      loginEmail:'E-mail',
+      loginPassword:'Hasło',
+      createAccount:'Załóż konto',
+      login:'Zaloguj',
+      authLocalNote:'Konta utworzone tutaj działają w tej przeglądarce i na tym urządzeniu. Pełne konta między urządzeniami wymagają później prawdziwego backendu autoryzacji.',
+      signupOk:'Konto zostało utworzone na tym urządzeniu.',
+      loginOk:'Jesteś zalogowany.',
+      badLogin:'Nieprawidłowy e-mail lub hasło.',
+      weakPassword:'Użyj co najmniej 8 znaków.',
+      missingFields:'Uzupełnij wszystkie wymagane pola.',
+      contactSending:'Wysyłanie…',
+      contactSuccess:'Wiadomość wysłana. Sprawdź skrzynkę, jeśli FormSubmit poprosi o jednorazową aktywację.',
+      contactFallback:'Bezpośrednia wysyłka nie jest jeszcze dostępna w tej przeglądarce. Otworzę aplikację pocztową.',
+      contactError:'Nie udało się wysłać bezpośrednio. Otwieram aplikację pocztową.',
+      sendMessage:'Wyślij wiadomość',
+      logout:'Wyloguj'
+    },
+    de: {openAuth:'Anmelden',userSignedIn:'Angemeldet',authKicker:'FundMind Konto',authHeadline:'Erstelle dein Konto und halte alles in einem Finanz-Kommandozentrum.',authCopy:'Diese Version enthält eine funktionierende Kontoebene im Browser, dunkle Premium-Formulare und direkten Kontakt zum FundMind-Postfach.',authBenefit1:'Konto in Sekunden erstellen',authBenefit2:'Auf diesem Gerät erneut anmelden',authBenefit3:'Geschäftsanfrage direkt an FundMind senden',tabSignup:'Konto erstellen',tabLogin:'Anmelden',firstName:'Vorname',lastName:'Nachname',email:'E-Mail',password:'Passwort',useCase:'Anwendungsfall',loginEmail:'E-Mail',loginPassword:'Passwort',createAccount:'Konto erstellen',login:'Anmelden',authLocalNote:'Hier erstellte Konten funktionieren in diesem Browser und auf diesem Gerät. Für echte Konten über mehrere Geräte hinweg brauchst du später ein echtes Auth-Backend.',signupOk:'Konto auf diesem Gerät erstellt.',loginOk:'Du bist angemeldet.',badLogin:'Falsche E-Mail oder falsches Passwort.',weakPassword:'Mindestens 8 Zeichen verwenden.',missingFields:'Bitte alle Pflichtfelder ausfüllen.',contactSending:'Wird gesendet…',contactSuccess:'Nachricht gesendet. Prüfe deinen Posteingang, falls FormSubmit eine einmalige Aktivierung verlangt.',contactFallback:'Direktes Senden ist in diesem Browser noch nicht verfügbar. Die Mail-App wird geöffnet.',contactError:'Direktes Senden fehlgeschlagen. Die Mail-App wird geöffnet.',sendMessage:'Nachricht senden',logout:'Abmelden'},
+    es: {openAuth:'Iniciar sesión',userSignedIn:'Sesión iniciada',authKicker:'Cuenta FundMind',authHeadline:'Crea tu cuenta y mantén todo en un solo centro financiero.',authCopy:'Esta versión incluye una capa de cuenta funcional en el navegador, formularios premium oscuros y contacto directo con la bandeja de FundMind.',authBenefit1:'Crear cuenta en segundos',authBenefit2:'Volver a iniciar sesión en este dispositivo',authBenefit3:'Enviar consultas de negocio directamente a FundMind',tabSignup:'Crear cuenta',tabLogin:'Entrar',firstName:'Nombre',lastName:'Apellido',email:'Correo',password:'Contraseña',useCase:'Uso',loginEmail:'Correo',loginPassword:'Contraseña',createAccount:'Crear cuenta',login:'Entrar',authLocalNote:'Las cuentas creadas aquí funcionan en este navegador y dispositivo. Para cuentas reales entre dispositivos, conecta luego un backend de autenticación.',signupOk:'Cuenta creada en este dispositivo.',loginOk:'Has iniciado sesión.',badLogin:'Correo o contraseña incorrectos.',weakPassword:'Usa al menos 8 caracteres.',missingFields:'Completa todos los campos obligatorios.',contactSending:'Enviando…',contactSuccess:'Mensaje enviado. Revisa tu bandeja si FormSubmit pide activación única.',contactFallback:'El envío directo aún no está disponible en este navegador. Se abrirá tu app de correo.',contactError:'No se pudo enviar directamente. Se abrirá tu app de correo.',sendMessage:'Enviar mensaje',logout:'Cerrar sesión'},
+    pt: {openAuth:'Entrar',userSignedIn:'Sessão iniciada',authKicker:'Conta FundMind',authHeadline:'Crie sua conta e mantenha tudo em um único centro financeiro.',authCopy:'Esta versão inclui uma camada de conta funcional no navegador, formulários premium escuros e contato direto com a caixa do FundMind.',authBenefit1:'Criar conta em segundos',authBenefit2:'Entrar novamente neste dispositivo',authBenefit3:'Enviar contato comercial direto ao FundMind',tabSignup:'Criar conta',tabLogin:'Entrar',firstName:'Nome',lastName:'Sobrenome',email:'E-mail',password:'Senha',useCase:'Uso',loginEmail:'E-mail',loginPassword:'Senha',createAccount:'Criar conta',login:'Entrar',authLocalNote:'As contas criadas aqui funcionam neste navegador e dispositivo. Para contas reais entre dispositivos, conecte depois um backend de autenticação.',signupOk:'Conta criada neste dispositivo.',loginOk:'Você entrou.',badLogin:'E-mail ou senha incorretos.',weakPassword:'Use pelo menos 8 caracteres.',missingFields:'Preencha todos os campos obrigatórios.',contactSending:'Enviando…',contactSuccess:'Mensagem enviada. Verifique sua caixa caso o FormSubmit peça ativação única.',contactFallback:'O envio direto ainda não está disponível neste navegador. Seu app de e-mail será aberto.',contactError:'Não foi possível enviar diretamente. Abrindo seu app de e-mail.',sendMessage:'Enviar mensagem',logout:'Sair'},
+    fr: {openAuth:'Se connecter',userSignedIn:'Connecté',authKicker:'Compte FundMind',authHeadline:'Créez votre compte et gardez tout dans un seul centre financier.',authCopy:'Cette version inclut une couche de compte fonctionnelle dans le navigateur, des formulaires premium sombres et un contact direct avec la boîte FundMind.',authBenefit1:'Créer un compte en quelques secondes',authBenefit2:'Se reconnecter sur cet appareil',authBenefit3:'Envoyer une demande commerciale directement à FundMind',tabSignup:'Créer un compte',tabLogin:'Connexion',firstName:'Prénom',lastName:'Nom',email:'E-mail',password:'Mot de passe',useCase:'Usage',loginEmail:'E-mail',loginPassword:'Mot de passe',createAccount:'Créer un compte',login:'Se connecter',authLocalNote:'Les comptes créés ici fonctionnent dans ce navigateur et sur cet appareil. Pour de vrais comptes multi-appareils, connectez ensuite un vrai backend d’authentification.',signupOk:'Compte créé sur cet appareil.',loginOk:'Vous êtes connecté.',badLogin:'E-mail ou mot de passe incorrect.',weakPassword:'Utilisez au moins 8 caractères.',missingFields:'Remplissez tous les champs obligatoires.',contactSending:'Envoi…',contactSuccess:'Message envoyé. Vérifiez votre boîte si FormSubmit demande une activation unique.',contactFallback:'L’envoi direct n’est pas encore disponible dans ce navigateur. Votre application mail va s’ouvrir.',contactError:'Envoi direct impossible. Ouverture de votre application mail.',sendMessage:'Envoyer le message',logout:'Se déconnecter'},
+    ru: {openAuth:'Войти',userSignedIn:'Вход выполнен',authKicker:'Аккаунт FundMind',authHeadline:'Создайте аккаунт и держите всё в одном финансовом центре.',authCopy:'Эта версия включает рабочий слой аккаунта в браузере, тёмные premium-формы и прямой контакт с почтой FundMind.',authBenefit1:'Создание аккаунта за секунды',authBenefit2:'Повторный вход на этом устройстве',authBenefit3:'Отправка делового запроса прямо в FundMind',tabSignup:'Создать аккаунт',tabLogin:'Войти',firstName:'Имя',lastName:'Фамилия',email:'E-mail',password:'Пароль',useCase:'Сценарий',loginEmail:'E-mail',loginPassword:'Пароль',createAccount:'Создать аккаунт',login:'Войти',authLocalNote:'Аккаунты, созданные здесь, работают в этом браузере и на этом устройстве. Для полноценной авторизации между устройствами позже нужен реальный backend.',signupOk:'Аккаунт создан на этом устройстве.',loginOk:'Вы вошли.',badLogin:'Неверный e-mail или пароль.',weakPassword:'Используйте не менее 8 символов.',missingFields:'Заполните все обязательные поля.',contactSending:'Отправка…',contactSuccess:'Сообщение отправлено. Проверьте почту, если FormSubmit попросит одноразовую активацию.',contactFallback:'Прямая отправка пока недоступна в этом браузере. Откроется почтовое приложение.',contactError:'Не удалось отправить напрямую. Открываю почтовое приложение.',sendMessage:'Отправить сообщение',logout:'Выйти'},
+    zh: {openAuth:'登录',userSignedIn:'已登录',authKicker:'FundMind 账户',authHeadline:'创建账户，把一切放进一个财务指挥中心。',authCopy:'这个版本包含浏览器内可用的账户层、深色高级表单，以及直达 FundMind 收件箱的联系流程。',authBenefit1:'几秒内创建账户',authBenefit2:'在此设备再次登录',authBenefit3:'直接向 FundMind 发送商务咨询',tabSignup:'创建账户',tabLogin:'登录',firstName:'名字',lastName:'姓氏',email:'邮箱',password:'密码',useCase:'用途',loginEmail:'邮箱',loginPassword:'密码',createAccount:'创建账户',login:'登录',authLocalNote:'这里创建的账户只在当前浏览器和设备中可用。真正跨设备的账户需要以后接入正式认证后端。',signupOk:'账户已在此设备创建。',loginOk:'你已登录。',badLogin:'邮箱或密码错误。',weakPassword:'请至少使用 8 个字符。',missingFields:'请填写所有必填项。',contactSending:'发送中…',contactSuccess:'消息已发送。如果 FormSubmit 要求一次性激活，请检查收件箱。',contactFallback:'当前浏览器暂不支持直接发送，将打开你的邮件应用。',contactError:'无法直接发送，正在打开邮件应用。',sendMessage:'发送消息',logout:'退出登录'},
+    ar: {openAuth:'تسجيل الدخول',userSignedIn:'تم تسجيل الدخول',authKicker:'حساب FundMind',authHeadline:'أنشئ حسابك واحتفظ بكل شيء في مركز مالي واحد.',authCopy:'هذه النسخة تتضمن طبقة حساب تعمل داخل المتصفح، ونماذج داكنة فاخرة، وطريقة تواصل مباشرة مع صندوق FundMind.',authBenefit1:'إنشاء الحساب خلال ثوانٍ',authBenefit2:'تسجيل الدخول مجدداً على هذا الجهاز',authBenefit3:'إرسال استفسار أعمال مباشرة إلى FundMind',tabSignup:'إنشاء حساب',tabLogin:'تسجيل الدخول',firstName:'الاسم الأول',lastName:'اسم العائلة',email:'البريد الإلكتروني',password:'كلمة المرور',useCase:'الاستخدام',loginEmail:'البريد الإلكتروني',loginPassword:'كلمة المرور',createAccount:'إنشاء حساب',login:'تسجيل الدخول',authLocalNote:'الحسابات المنشأة هنا تعمل على هذا المتصفح وهذا الجهاز. للحصول على حسابات حقيقية بين الأجهزة، اربط لاحقاً Backend فعلي للمصادقة.',signupOk:'تم إنشاء الحساب على هذا الجهاز.',loginOk:'تم تسجيل دخولك.',badLogin:'البريد الإلكتروني أو كلمة المرور غير صحيحة.',weakPassword:'استخدم 8 أحرف على الأقل.',missingFields:'املأ جميع الحقول المطلوبة.',contactSending:'جارٍ الإرسال…',contactSuccess:'تم إرسال الرسالة. افحص بريدك إذا طلب FormSubmit تفعيلًا لمرة واحدة.',contactFallback:'الإرسال المباشر غير متاح بعد في هذا المتصفح. سيتم فتح تطبيق البريد.',contactError:'تعذر الإرسال المباشر. سيتم فتح تطبيق البريد.',sendMessage:'إرسال الرسالة',logout:'تسجيل الخروج'}
+  };
+  const $ = (id) => document.getElementById(id);
+  const authModal = $('authModal');
+  const authBackdrop = $('authBackdrop');
+  const openAuthBtn = $('openAuthBtn');
+  const closeAuthBtn = $('closeAuthBtn');
+  const authUserBadge = $('authUserBadge');
+  const authUserText = $('authUserText');
+  const tabs = [...document.querySelectorAll('.auth-tab')];
+  const panels = {signup: $('panelSignup'), login: $('panelLogin')};
+  const signupStatus = $('signupStatus');
+  const loginStatus = $('loginStatus');
+  const signupSubmit = $('signupSubmit');
+  const loginSubmit = $('loginSubmit');
+  const contactForm = $('contactForm');
+  const contactHelper = document.querySelector('.contact-helper');
+  const sendMessageBtn = contactForm ? contactForm.querySelector('.contact-submit') : null;
+  const ACCOUNTS_KEY = 'fundmind_site_accounts_v1';
+  const SESSION_KEY = 'fundmind_site_session_v1';
+
+  function getLang(){ return window.currentFundMindLang || document.documentElement.lang || 'en';}
+  function t(key){ const lang=getLang(); return (ui[lang] && ui[lang][key]) || ui.en[key] || key; }
+  function setStatus(el, text, cls){ if(!el) return; el.textContent=text || ''; el.className='auth-status' + (cls ? ' '+cls : ''); }
+  function getAccounts(){ try{return JSON.parse(localStorage.getItem(ACCOUNTS_KEY)||'[]')}catch(e){return []} }
+  function saveAccounts(v){ localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(v)); }
+  function setSession(v){ localStorage.setItem(SESSION_KEY, JSON.stringify(v)); refreshSessionUi(); }
+  function getSession(){ try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch(e){return null} }
+
+  function openAuth(panel='signup'){
+    authModal.classList.add('open'); authBackdrop.classList.add('open');
+    authModal.setAttribute('aria-hidden','false'); document.body.classList.add('modal-open');
+    switchTab(panel);
+  }
+  function closeAuth(){
+    authModal.classList.remove('open'); authBackdrop.classList.remove('open');
+    authModal.setAttribute('aria-hidden','true'); document.body.classList.remove('modal-open');
+  }
+  function switchTab(name){
+    tabs.forEach(btn => btn.classList.toggle('active', btn.dataset.authTab === name));
+    Object.keys(panels).forEach(key => panels[key].classList.toggle('active', key===name));
+  }
+
+  function refreshSessionUi(){
+    const session = getSession();
+    if(session && session.email){
+      authUserBadge.classList.add('show');
+      authUserText.textContent = `${t('userSignedIn')}: ${session.firstName || session.email}`;
+      openAuthBtn.textContent = t('logout');
+      openAuthBtn.onclick = () => {
+        localStorage.removeItem(SESSION_KEY);
+        refreshSessionUi();
+      };
+    } else {
+      authUserBadge.classList.remove('show');
+      openAuthBtn.textContent = t('openAuth');
+      openAuthBtn.onclick = () => openAuth('login');
+    }
+  }
+
+  function applyUiTranslations(){
+    $('authKicker').textContent = t('authKicker');
+    $('authHeadline').textContent = t('authHeadline');
+    $('authCopy').textContent = t('authCopy');
+    $('authBenefit1').textContent = t('authBenefit1');
+    $('authBenefit2').textContent = t('authBenefit2');
+    $('authBenefit3').textContent = t('authBenefit3');
+    $('tabSignup').textContent = t('tabSignup');
+    $('tabLogin').textContent = t('tabLogin');
+    $('labelFirstName').textContent = t('firstName');
+    $('labelLastName').textContent = t('lastName');
+    $('labelEmail').textContent = t('email');
+    $('labelPassword').textContent = t('password');
+    $('labelUseCase').textContent = t('useCase');
+    $('labelLoginEmail').textContent = t('loginEmail');
+    $('labelLoginPassword').textContent = t('loginPassword');
+    signupSubmit.textContent = t('createAccount');
+    loginSubmit.textContent = t('login');
+    $('authLocalNote').textContent = t('authLocalNote');
+    $('signupFirst').placeholder = t('firstName');
+    $('signupLast').placeholder = t('lastName');
+    $('signupEmail').placeholder = 'contact@fundmindapp.com';
+    $('signupPassword').placeholder = t('password');
+    $('signupEntity').placeholder = t('useCase');
+    $('loginEmail').placeholder = 'contact@fundmindapp.com';
+    $('loginPassword').placeholder = t('password');
+    if(sendMessageBtn) sendMessageBtn.textContent = t('sendMessage');
+    refreshSessionUi();
+  }
+
+  tabs.forEach(btn => btn.addEventListener('click', ()=>switchTab(btn.dataset.authTab)));
+  openAuthBtn.addEventListener('click', ()=>{ if(!getSession()) openAuth('login'); });
+  closeAuthBtn.addEventListener('click', closeAuth);
+  authBackdrop.addEventListener('click', closeAuth);
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeAuth(); });
+
+  signupSubmit.addEventListener('click', ()=>{
+    const firstName = $('signupFirst').value.trim();
+    const lastName = $('signupLast').value.trim();
+    const email = $('signupEmail').value.trim().toLowerCase();
+    const password = $('signupPassword').value;
+    const useCase = $('signupEntity').value.trim();
+    if(!firstName || !lastName || !email || !password){ setStatus(signupStatus, t('missingFields'), 'err'); return; }
+    if(password.length < 8){ setStatus(signupStatus, t('weakPassword'), 'err'); return; }
+    const accounts = getAccounts();
+    const existingIdx = accounts.findIndex(a => a.email === email);
+    const account = {firstName,lastName,email,password,useCase,createdAt:new Date().toISOString()};
+    if(existingIdx >= 0) accounts[existingIdx] = account; else accounts.push(account);
+    saveAccounts(accounts); setSession(account);
+    setStatus(signupStatus, t('signupOk'), 'ok');
+    setTimeout(closeAuth, 700);
+  });
+
+  loginSubmit.addEventListener('click', ()=>{
+    const email = $('loginEmail').value.trim().toLowerCase();
+    const password = $('loginPassword').value;
+    const account = getAccounts().find(a => a.email === email && a.password === password);
+    if(!account){ setStatus(loginStatus, t('badLogin'), 'err'); return; }
+    setSession(account); setStatus(loginStatus, t('loginOk'), 'ok');
+    setTimeout(closeAuth, 700);
+  });
+
+  if(contactForm){
+    contactForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const data = {
+        name: $('cf-name').value.trim(),
+        email: $('cf-email').value.trim(),
+        company: $('cf-company').value.trim(),
+        subject: $('cf-subject').value.trim() || 'FundMind website inquiry',
+        message: $('cf-message').value.trim()
+      };
+      if(!data.name || !data.email || !data.message){
+        contactHelper.textContent = t('missingFields');
+        contactHelper.className = 'contact-helper status-err';
+        return;
+      }
+      contactHelper.textContent = t('contactSending');
+      contactHelper.className = 'contact-helper';
+      try{
+        const res = await fetch('https://formsubmit.co/ajax/contact@fundmindapp.com', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json', 'Accept':'application/json'},
+          body: JSON.stringify({
+            name: data.name,
+            email: data.email,
+            subject: data.subject,
+            company: data.company,
+            message: data.message,
+            _template: 'table'
+          })
+        });
+        const out = await res.json().catch(()=>({success:false}));
+        if(res.ok && (out.success === 'true' || out.success === true || out.message)){
+          contactForm.reset();
+          contactHelper.textContent = t('contactSuccess');
+          contactHelper.className = 'contact-helper status-ok';
+          return;
+        }
+        throw new Error('submit-failed');
+      } catch(err){
+        const localPreview = window.location.protocol === 'file:';
+        if(localPreview){
+          contactHelper.textContent = t('contactLocalPreview');
+        } else {
+          contactHelper.textContent = t('contactError');
+        }
+        contactHelper.className = 'contact-helper status-err';
+      }
+    });
+  }
+
+  document.addEventListener('fundmind:langchange', applyUiTranslations);
+  applyUiTranslations();
+  refreshSessionUi();
+})();
+</script>
+
 </body>
 </html>
