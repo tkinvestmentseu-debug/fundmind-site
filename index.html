@@ -1453,45 +1453,50 @@ body::before{
 .fcw-status{font-size:11px;color:var(--green);display:flex;align-items:center;gap:4px}
 .fcw-close{margin-left:auto;background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;line-height:1;padding:4px}
 .fcw-close:hover{color:var(--text)}
-.fcw-msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+/* fcw-msgs: min-height:0 is critical for flex children to scroll correctly */
+.fcw-msgs{flex:1;min-height:0;overflow-y:auto;padding:12px 12px 8px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
 .fcw-msgs::-webkit-scrollbar{width:4px}
-.fcw-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:2px}
+.fcw-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:2px}
 .fcw-bubble{
-  padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.6;max-width:90%;
+  padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.65;max-width:88%;word-break:break-word;
 }
 .fcw-bubble.bot{
-  background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.2);
-  border-bottom-left-radius:4px;align-self:flex-start;color:rgba(255,255,255,.85);
+  background:rgba(139,92,246,.16);border:1px solid rgba(139,92,246,.30);
+  border-bottom-left-radius:4px;align-self:flex-start;color:rgba(255,255,255,.94);
 }
 .fcw-bubble.user{
-  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
-  border-bottom-right-radius:4px;align-self:flex-end;color:rgba(255,255,255,.85);
+  background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.15);
+  border-bottom-right-radius:4px;align-self:flex-end;color:rgba(255,255,255,.94);
 }
-.fcw-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 12px 10px}
+/* chips: flex-shrink:0 + max-height so they never push messages out of view */
+.fcw-chips{display:flex;flex-wrap:wrap;gap:6px;padding:8px 12px;flex-shrink:0;max-height:78px;overflow-y:auto;border-top:1px solid rgba(255,255,255,.05)}
 .fcw-chip{
-  background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.25);
+  background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.28);
   color:var(--v2);border-radius:999px;padding:5px 12px;
   font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;
 }
-.fcw-chip:hover{background:rgba(139,92,246,.2);border-color:var(--v)}
+.fcw-chip:hover{background:rgba(139,92,246,.22);border-color:var(--v)}
 .fcw-input-row{
-  display:flex;gap:8px;padding:10px 12px;
-  border-top:1px solid rgba(255,255,255,.07);flex-shrink:0;
+  display:flex;gap:8px;padding:10px 12px 12px;
+  border-top:1px solid rgba(255,255,255,.08);flex-shrink:0;
 }
 .fcw-input{
-  flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
   border-radius:10px;padding:9px 12px;font-size:13px;
-  color:var(--text);outline:none;font-family:inherit;
+  color:#fff;outline:none;font-family:inherit;
 }
-.fcw-input:focus{border-color:rgba(139,92,246,.5)}
+.fcw-input:focus{border-color:rgba(139,92,246,.55)}
 .fcw-input::placeholder{color:var(--subtle)}
 .fcw-send{
   width:36px;height:36px;border-radius:10px;border:none;cursor:pointer;
   background:var(--v);color:#fff;display:flex;align-items:center;justify-content:center;
-  font-size:14px;flex-shrink:0;transition:background .15s;
+  font-size:14px;flex-shrink:0;transition:background .15s;align-self:flex-end;
 }
 .fcw-send:hover{background:var(--v3)}
-@media(max-width:480px){#fm-chat-btn{bottom:20px;right:16px}#fm-chat-win{right:8px;bottom:84px}}
+@media(max-width:480px){
+  #fm-chat-btn{bottom:20px;right:16px}
+  #fm-chat-win{right:8px;left:8px;bottom:82px;width:auto;max-width:none;height:420px}
+}
 
 </style>
 </head>
@@ -3472,7 +3477,7 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
   <div class="fcw-head">
     <div class="fcw-avatar">◈</div>
     <div>
-      <div class="fcw-name">Marcek AI</div>
+      <div class="fcw-name">Advisor AI</div>
       <div class="fcw-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block"></span> Online</div>
     </div>
     <button class="fcw-close" id="fcw-close-btn" aria-label="Close chat">×</button>
@@ -3487,92 +3492,149 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 
 <script>
 (function(){
-  const L = window.currentFundMindLang || 'en';
+  // ── Helper: normalize text for matching (lowercase + strip PL diacritics) ──
+  function norm(s){
+    return String(s).toLowerCase()
+      .replace(/ą/g,'a').replace(/ć/g,'c').replace(/ę/g,'e').replace(/ł/g,'l')
+      .replace(/ń/g,'n').replace(/ó/g,'o').replace(/ś/g,'s').replace(/ź/g,'z').replace(/ż/g,'z')
+      .replace(/ü/g,'u').replace(/ö/g,'o').replace(/ä/g,'a').replace(/ß/g,'ss');
+  }
 
-  // ── FAQ knowledge base ─────────────────────────────────────────────────────
-  const KB = {
-    modules: {
-      q: ['how many modules','how many features','what modules','60 modules','what can it do','co umie','ile modułów','jakie moduły','was kann'],
-      a: {
-        en: '📦 FundMind has <strong>60+ modules</strong> including: Budget, Expenses, Crypto Portfolio, DeFi Analytics, Staking, NFT Tracker, Tax Planner, Goals & Savings, FIRE Calculator, Invoice Manager, Cash Flow, FX Rates, and many more. All accessible from the "More" screen.',
-        pl: '📦 FundMind ma <strong>60+ modułów</strong>: Budżet, Wydatki, Portfolio krypto, Analityka DeFi, Staking, NFT Tracker, Planer podatkowy, Cele i oszczędności, Kalkulator FIRE, Menedżer faktur, Przepływ gotówki, Kursy FX i wiele więcej. Wszystkie dostępne z ekranu "Więcej".',
-        de: '📦 FundMind hat <strong>60+ Module</strong>: Budget, Ausgaben, Crypto-Portfolio, DeFi-Analytik, Staking, NFT-Tracker, Steuerplaner, Ziele & Sparen, FIRE-Rechner, Rechnungsmanager und viele mehr.',
-      }
-    },
-    ai: {
-      q: ['ai advisor','marcek','ai financial','ai chat','how does ai','doradca ai','co robi ai','ki berater'],
-      a: {
-        en: '🤖 <strong>Marcek</strong> is FundMind\'s AI financial advisor powered by Claude. It knows your transactions, goals, crypto positions, taxes, and subscriptions — and gives actionable insights. Ask it anything: "How can I save more?" or "How is my crypto doing?" It responds in your language.',
-        pl: '🤖 <strong>Marcek</strong> to doradca finansowy AI oparty na modelu Claude. Zna Twoje transakcje, cele, pozycje krypto, podatki i subskrypcje — i daje konkretne wskazówki. Pytaj o wszystko: "Jak zaoszczędzić więcej?" czy "Jak radzi sobie moje krypto?"',
-        de: '🤖 <strong>Marcek</strong> ist FundMinds KI-Finanzberater auf Basis von Claude. Er kennt deine Transaktionen, Ziele, Krypto-Positionen und gibt umsetzbare Ratschläge.',
-      }
-    },
-    crypto: {
-      q: ['crypto','defi','bitcoin','ethereum','staking','nft','blockchain','krypto','kryptowaluty','web3'],
-      a: {
-        en: '₿ FundMind\'s <strong>Crypto Universe</strong> includes: Live prices via CoinGecko, DeFi positions (Uniswap, Aave, Lido, Curve), Staking rewards calculator, NFT portfolio, Gas tracker, Yield aggregator, Multi-chain wallets (Ethereum, BSC, Polygon, Solana), and Crypto tax reports.',
-        pl: '₿ Świat krypto w FundMind obejmuje: Kursy na żywo (CoinGecko), Pozycje DeFi (Uniswap, Aave, Lido, Curve), Kalkulator nagród stakingowych, Portfolio NFT, Gas tracker, Agregator yield, Portfele multi-chain i Raporty podatkowe krypto.',
-        de: '₿ FundMinds <strong>Krypto-Universum</strong> umfasst: Live-Preise via CoinGecko, DeFi-Positionen, Staking-Rechner, NFT-Portfolio, Gas-Tracker und Krypto-Steuerberichte.',
-      }
-    },
-    price: {
-      q: ['price','cost','how much','free','premium','pro','pricing','subscription','cena','ile kosztuje','za darmo','preis','kostet'],
-      a: {
-        en: '💰 FundMind has 3 plans:<br>• <strong>Free</strong> — forever free, core budgeting & tracking<br>• <strong>Premium</strong> — 29 PLN/month (23 PLN annual), AI advisor, all modules<br>• <strong>Pro</strong> — 79 PLN/month (63 PLN annual), multi-entity, business features, priority support<br>14-day free trial. No credit card required.',
-        pl: '💰 FundMind ma 3 plany:<br>• <strong>Darmowy</strong> — zawsze za darmo, podstawowy budżet i śledzenie<br>• <strong>Premium</strong> — 29 PLN/miesiąc (23 PLN rocznie), doradca AI, wszystkie moduły<br>• <strong>Pro</strong> — 79 PLN/miesiąc (63 PLN rocznie), wiele podmiotów, funkcje biznesowe<br>14 dni za darmo. Bez karty płatniczej.',
-        de: '💰 FundMind hat 3 Pläne:<br>• <strong>Free</strong> — kostenlos für immer<br>• <strong>Premium</strong> — 29 PLN/Monat, KI-Berater<br>• <strong>Pro</strong> — 79 PLN/Monat, Multi-Entity, Business-Funktionen<br>14-tägige kostenlose Testversion.',
-      }
-    },
-    security: {
-      q: ['security','safe','privacy','encrypt','gdpr','biometric','bezpieczeństwo','prywatność','szyfrowanie','sicher','verschlüssel'],
-      a: {
-        en: '🔐 FundMind uses <strong>local-first architecture</strong> — your data stays on your device, encrypted with AES-256. We cannot read your data. Features include: biometric lock (Face ID / Touch ID), anomaly detection, GDPR-compliant data export/deletion, and no third-party data sharing.',
-        pl: '🔐 FundMind używa architektury <strong>local-first</strong> — Twoje dane pozostają na urządzeniu, zaszyfrowane AES-256. My nie możemy ich odczytać. Funkcje: blokada biometryczna (Face ID / Touch ID), wykrywanie anomalii, eksport/usuwanie danych zgodne z RODO.',
-        de: '🔐 FundMind nutzt <strong>Local-First-Architektur</strong> — deine Daten bleiben verschlüsselt auf deinem Gerät. AES-256-Verschlüsselung, biometrische Sperre, DSGVO-konform.',
-      }
-    },
-    download: {
-      q: ['download','install','ios','android','app store','google play','pobierz','jak zainstalować','herunterladen'],
-      a: {
-        en: '📱 FundMind is available on <strong>iOS</strong> (App Store) and <strong>Android</strong> (Google Play). Download it free at <a href="https://www.fundmindapp.com" style="color:var(--teal)">fundmindapp.com</a> or search "FundMind DualFi AI" in your app store.',
-        pl: '📱 FundMind jest dostępny na <strong>iOS</strong> (App Store) i <strong>Android</strong> (Google Play). Pobierz za darmo na <a href="https://www.fundmindapp.com" style="color:var(--teal)">fundmindapp.com</a> lub wyszukaj "FundMind DualFi AI" w swoim sklepie.',
-        de: '📱 FundMind ist für <strong>iOS</strong> und <strong>Android</strong> verfügbar. Kostenlos herunterladen auf <a href="https://www.fundmindapp.com" style="color:var(--teal)">fundmindapp.com</a>.',
-      }
-    },
-    languages: {
-      q: ['languages','language','języki','język','sprachen','arabic','polish','multi-language','localization','locali'],
-      a: {
-        en: '🌍 FundMind supports <strong>9 languages</strong>: Polish 🇵🇱, English 🇬🇧, German 🇩🇪, Spanish 🇪🇸, French 🇫🇷, Portuguese 🇵🇹, Russian 🇷🇺, Chinese 🇨🇳, and Arabic 🇸🇦 (including RTL layout). All 4,500+ translations are built in — no extra download.',
-        pl: '🌍 FundMind obsługuje <strong>9 języków</strong>: Polski 🇵🇱, Angielski 🇬🇧, Niemiecki 🇩🇪, Hiszpański 🇪🇸, Francuski 🇫🇷, Portugalski 🇵🇹, Rosyjski 🇷🇺, Chiński 🇨🇳 i Arabski 🇸🇦 (z układem RTL). Wszystkie 4 500+ tłumaczeń jest wbudowanych.',
-        de: '🌍 FundMind unterstützt <strong>9 Sprachen</strong>: Polnisch, Englisch, Deutsch, Spanisch, Französisch, Portugiesisch, Russisch, Chinesisch und Arabisch (mit RTL-Layout).',
-      }
-    },
-    import: {
-      q: ['import','csv','ofx','bank sync','open banking','synchronizacja','import transakcji','bankimport'],
-      a: {
-        en: '🏦 FundMind supports <strong>CSV/OFX bank import</strong> — upload an export from any bank and FundMind auto-detects columns, parses amounts/dates, and categorises transactions using AI. Open Banking PSD2 sync is on the Q2 2026 roadmap.',
-        pl: '🏦 FundMind obsługuje <strong>import CSV/OFX z banku</strong> — wgraj eksport z dowolnego banku, a FundMind automatycznie wykryje kolumny, sparsuje kwoty/daty i skategoryzuje transakcje. Synchronizacja Open Banking PSD2 jest w roadmapie Q2 2026.',
-        de: '🏦 FundMind unterstützt <strong>CSV/OFX-Bankimport</strong> — lade einen Export aus jeder Bank hoch und FundMind erkennt automatisch Spalten und kategorisiert Transaktionen.',
-      }
-    }
-  };
+  // ── Escape user input before rendering ────────────────────────────────────
+  function esc(s){
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
 
-  // ── Suggested questions (shown as chips) ──────────────────────────────────
+  // ── Smart FAQ knowledge base — keywords use SHORT STEMS so Polish inflection works ──
+  // Rule: use first 5-7 chars of a word so ę/ą/ó endings don't break matching.
+  const KB = [
+    {
+      kw: ['ile modu','ile funkcj','jakie modu','co umie','what module','how many module','how many feature','60 module','what can it do','was kann','wie viele','funktione','modul'],
+      a: {
+        en: '📦 FundMind has <strong>60+ modules</strong>: Budget, Expenses, Crypto Portfolio, DeFi Analytics, Staking, NFT Tracker, Tax Planner, Goals & FIRE, Invoice Manager, Cash Flow, FX Rates, Open Banking import, AI Advisor, and many more — all accessible from the "More" screen.',
+        pl: '📦 FundMind ma <strong>ponad 60 modułów</strong>: Budżet, Wydatki, Portfolio krypto, Analityka DeFi, Staking, NFT Tracker, Planer podatkowy, Cele i FIRE, Faktury, Przepływy gotówki, Kursy FX, Import z banku, Doradca AI i wiele innych — dostępnych z ekranu "Więcej".',
+        de: '📦 FundMind hat <strong>60+ Module</strong>: Budget, Ausgaben, Krypto-Portfolio, DeFi-Analytik, Staking, NFT-Tracker, Steuerplaner, Ziele & FIRE, Rechnungsmanager, Cashflow, FX-Kurse, Bankimport, KI-Berater und viele mehr.',
+      }
+    },
+    {
+      kw: ['advisor ai','ai advisor','ai financial','ai chat','how does ai','doradca ai','co robi ai','jak dziala ai','ai doradca','advisor','sztuczn','inteligencj','ki berater','kunstlich','asystent ai','ai asystent','ai pomoc','chat ai','doradc','poradzi'],
+      a: {
+        en: '🤖 <strong>Advisor AI</strong> is FundMind\'s domain-aware AI assistant. It understands your full financial picture — transactions, crypto positions, goals, taxes, subscriptions — and gives concrete, personalized recommendations. Ask it: "Where am I spending the most?" or "How is my DeFi performing?"',
+        pl: '🤖 <strong>Advisor AI</strong> to asystent AI FundMind, który rozumie Twoje pełne finanse — transakcje, krypto, cele, podatki, subskrypcje. Daje konkretne, spersonalizowane wskazówki. Możesz pytać: "Na co wydaję najwięcej?" czy "Jak radzą sobie moje inwestycje DeFi?"',
+        de: '🤖 <strong>Advisor AI</strong> ist FundMinds domain-bewusster KI-Assistent. Er versteht dein gesamtes Finanzprofil — Transaktionen, Krypto, Ziele, Steuern — und gibt konkrete, persönliche Empfehlungen.',
+      }
+    },
+    {
+      kw: ['krypto','crypto','defi','bitcoin','ethereum','staking','nft','blockchain','web3','solana','bnb','polygon','coinbase','binance','uniswap','aave','lido','yield','gas track','gas fee','kryptowalut'],
+      a: {
+        en: '₿ FundMind\'s <strong>Crypto Universe</strong> covers: Live prices (CoinGecko), DeFi positions (Uniswap, Aave, Lido, Curve), Staking rewards calculator, NFT portfolio, Gas tracker, Yield aggregator, Multi-chain wallets (Ethereum / BSC / Polygon / Solana), and Crypto tax reports.',
+        pl: '₿ Świat krypto w FundMind to: Kursy na żywo (CoinGecko), Pozycje DeFi (Uniswap, Aave, Lido, Curve), Kalkulator nagród ze stakingu, Portfolio NFT, Gas tracker, Agregator yield, Portfele multi-chain (Ethereum / BSC / Polygon / Solana) i Raporty podatkowe krypto.',
+        de: '₿ FundMinds <strong>Krypto-Universum</strong>: Live-Preise (CoinGecko), DeFi-Positionen (Uniswap, Aave, Lido), Staking-Rechner, NFT-Portfolio, Gas-Tracker, Yield-Aggregator, Multi-Chain-Wallets und Krypto-Steuerberichte.',
+      }
+    },
+    {
+      kw: ['cena','cenni','ile kosz','darmo','bezplat','darmow','premium','pro plan','abonamen','price','cost','how much','free','paid','pricing','subscription plan','kostet','preis','gratis','kostenlos','platny','platne','platna','za ile','plac'],
+      a: {
+        en: '💰 FundMind has 3 plans:<br>• <strong>Free</strong> — forever free, budgeting & tracking<br>• <strong>Premium</strong> — 29 PLN/month (23 PLN billed annually), AI advisor + all modules<br>• <strong>Pro</strong> — 79 PLN/month (63 PLN annually), multi-entity, business features, priority support<br><em>14-day free trial. No credit card required.</em>',
+        pl: '💰 FundMind ma 3 plany:<br>• <strong>Darmowy</strong> — zawsze bezpłatny, podstawowy budżet i śledzenie<br>• <strong>Premium</strong> — 29 PLN/mies. (23 PLN rocznie), doradca AI + wszystkie moduły<br>• <strong>Pro</strong> — 79 PLN/mies. (63 PLN rocznie), wiele podmiotów, funkcje biznesowe<br><em>14 dni za darmo. Bez karty płatniczej.</em>',
+        de: '💰 FundMind hat 3 Pläne:<br>• <strong>Free</strong> — kostenlos für immer<br>• <strong>Premium</strong> — 29 PLN/Monat, KI-Berater + alle Module<br>• <strong>Pro</strong> — 79 PLN/Monat, Multi-Entity, Business-Funktionen<br><em>14 Tage kostenlos. Keine Kreditkarte nötig.</em>',
+      }
+    },
+    {
+      kw: ['bezpiecz','prywat','szyfr','rodo','gdpr','biometri','face id','touch id','security','safe','privacy','encrypt','biometric','local first','local-first','moje dane','sicher','verschluss','datenschutz','dsgvo','chron','zabezpiecz'],
+      a: {
+        en: '🔐 FundMind uses <strong>local-first architecture</strong> — your financial data lives encrypted on your device (AES-256). We have no access to it. Key security features: biometric lock (Face ID / Touch ID), real-time anomaly detection, GDPR/RODO-compliant export & deletion, zero third-party data sharing.',
+        pl: '🔐 FundMind działa w architekturze <strong>local-first</strong> — Twoje dane finansowe są zaszyfrowane na urządzeniu (AES-256) i niedostępne dla nas. Funkcje bezpieczeństwa: blokada biometryczna (Face ID / Touch ID), wykrywanie anomalii, eksport i usuwanie danych zgodne z RODO.',
+        de: '🔐 FundMind nutzt <strong>Local-First-Architektur</strong> — deine Daten bleiben AES-256-verschlüsselt auf deinem Gerät. Wir haben keinen Zugriff. Biometrische Sperre, Anomalieerkennung, DSGVO-konformer Export.',
+      }
+    },
+    {
+      kw: ['pobierz','zainstaluj','jak zainstal','jak pobra','ios','android','app store','google play','install','download','herunterlad','aplikacja na telefon','aplikacja mobil','mobile app','gdzie pobrac','gdzie dostac','sciagnac','sciagn'],
+      a: {
+        en: '📱 FundMind is available free on <strong>iOS</strong> (App Store) and <strong>Android</strong> (Google Play). Search for <em>"FundMind DualFi AI"</em> — or visit <a href="https://www.fundmindapp.com" style="color:var(--teal)">fundmindapp.com</a> for direct download links.',
+        pl: '📱 FundMind jest dostępny za darmo na <strong>iOS</strong> (App Store) i <strong>Android</strong> (Google Play). Wyszukaj <em>"FundMind DualFi AI"</em> — lub wejdź na <a href="https://www.fundmindapp.com" style="color:var(--teal)">fundmindapp.com</a> po linki do pobrania.',
+        de: '📱 FundMind ist kostenlos für <strong>iOS</strong> (App Store) und <strong>Android</strong> (Google Play) verfügbar. Suche nach <em>"FundMind DualFi AI"</em> oder besuche <a href="https://www.fundmindapp.com" style="color:var(--teal)">fundmindapp.com</a>.',
+      }
+    },
+    {
+      kw: ['jezyk','tlumacz','arabski','arab','rtl','languages','language','polish','arabic','multi-language','locali','sprachen','ubersetzu','jezyki','wielojezycz','obslugujesz'],
+      a: {
+        en: '🌍 FundMind supports <strong>9 languages</strong>: Polish 🇵🇱, English 🇬🇧, German 🇩🇪, Spanish 🇪🇸, French 🇫🇷, Portuguese 🇵🇹, Russian 🇷🇺, Chinese 🇨🇳, and Arabic 🇸🇦 (with full RTL layout). 4,500+ translation keys — all built-in, no extra download needed.',
+        pl: '🌍 FundMind obsługuje <strong>9 języków</strong>: Polski 🇵🇱, Angielski 🇬🇧, Niemiecki 🇩🇪, Hiszpański 🇪🇸, Francuski 🇫🇷, Portugalski 🇵🇹, Rosyjski 🇷🇺, Chiński 🇨🇳 i Arabski 🇸🇦 (z pełnym układem RTL). Ponad 4 500 kluczy tłumaczeń wbudowanych w aplikację.',
+        de: '🌍 FundMind unterstützt <strong>9 Sprachen</strong>: Polnisch, Englisch, Deutsch, Spanisch, Französisch, Portugiesisch, Russisch, Chinesisch und Arabisch (mit RTL-Layout). Über 4.500 eingebaute Übersetzungsschlüssel.',
+      }
+    },
+    {
+      kw: ['import','csv','ofx','bank sync','open banking','synchroniz','import transakcj','przelew','bankimport','psd2','plaid','gocardless','bank connection','podlacz bank','podlaczenie bank','polacz bank'],
+      a: {
+        en: '🏦 FundMind supports <strong>CSV/OFX bank import</strong> — upload any bank export and FundMind auto-detects columns, parses amounts & dates, and AI-categorises every transaction. Direct Open Banking (PSD2) sync is on the <strong>Q2 2026 roadmap</strong>.',
+        pl: '🏦 FundMind obsługuje <strong>import CSV/OFX z banku</strong> — wgraj eksport z dowolnego banku, a FundMind automatycznie rozpozna kolumny, sparsuje kwoty i daty oraz skategoryzuje transakcje za pomocą AI. Bezpośrednia synchronizacja Open Banking (PSD2) jest w roadmapie na <strong>Q2 2026</strong>.',
+        de: '🏦 FundMind unterstützt <strong>CSV/OFX-Bankimport</strong> — lade einen Export aus jeder Bank hoch. FundMind erkennt Spalten automatisch und kategorisiert Transaktionen per KI. Direktes Open-Banking (PSD2) kommt im <strong>Q2 2026</strong>.',
+      }
+    },
+    {
+      kw: ['kontakt','napisz','support','pomoc techniczn','email','partnerst','wspolprac','demo','umow','contact','get in touch','business inquiry','team','napisac do','napisac wam'],
+      a: {
+        en: '📬 Reach the FundMind team at <a href="mailto:contact@fundmindapp.com" style="color:var(--teal)">contact@fundmindapp.com</a> — we reply within 24 hours.<br>For business / partnership enquiries use the <strong>Contact</strong> form on this page. Demo calls available on request.',
+        pl: '📬 Skontaktuj się z zespołem FundMind: <a href="mailto:contact@fundmindapp.com" style="color:var(--teal)">contact@fundmindapp.com</a> — odpowiadamy w ciągu 24 godzin.<br>Dla zapytań biznesowych i partnerskich użyj formularza <strong>Kontakt</strong> na tej stronie. Rozmowy demo dostępne na żądanie.',
+        de: '📬 Kontaktiere das FundMind-Team: <a href="mailto:contact@fundmindapp.com" style="color:var(--teal)">contact@fundmindapp.com</a> — Antwort innerhalb von 24 Stunden.<br>Für Business- und Partnerschaftsanfragen nutze das <strong>Kontaktformular</strong> auf dieser Seite.',
+      }
+    },
+    {
+      kw: ['roadmap','roadmap','co planujet','co planujec','przyszlos','nowe funkc','coming soon','future feature','co bedzie','planowane','q1 2026','q2 2026','q3 2026','was kommt','zukunft','co dalej','kiedy','nastepna wersj','update aplikac'],
+      a: {
+        en: '🗺️ <strong>FundMind roadmap highlights:</strong><br>• Q1 2026 — Supabase cross-device sync, biometric gate improvements<br>• Q2 2026 — Open Banking PSD2 (direct bank connection), iOS widgets<br>• Q3 2026 — Collaborative multi-user accounts, investment API integrations<br>• Q4 2026 — Web dashboard, FundMind Premium card<br>Follow updates at <a href="https://www.fundmindapp.com" style="color:var(--teal)">fundmindapp.com</a>.',
+        pl: '🗺️ <strong>Najważniejsze punkty roadmapy FundMind:</strong><br>• Q1 2026 — Synchronizacja Supabase między urządzeniami<br>• Q2 2026 — Open Banking PSD2 (bezpośrednie połączenie z bankiem), widgety iOS<br>• Q3 2026 — Konta wieloosobowe, integracje API inwestycyjnych<br>• Q4 2026 — Dashboard webowy, karta FundMind Premium<br>Śledź aktualizacje na <a href="https://www.fundmindapp.com" style="color:var(--teal)">fundmindapp.com</a>.',
+        de: '🗺️ <strong>FundMind Roadmap-Highlights:</strong><br>• Q1 2026 — Supabase geräteübergreifende Synchronisation<br>• Q2 2026 — Open Banking PSD2, iOS-Widgets<br>• Q3 2026 — Multi-User-Konten, Investment-API-Integrationen<br>• Q4 2026 — Web-Dashboard, FundMind Premium Card.',
+      }
+    },
+    {
+      kw: ['blog','artykul','artykuly','aktualnosc','news','updates','co nowego','czytaj','wpis','article','whats new','was neu','poczytac','poczytaj','post na'],
+      a: {
+        en: '📖 The <strong>FundMind Blog</strong> covers deep dives into AI-powered personal finance, local data encryption, DeFi+fiat data models, internationalisation, and product updates. Check out the latest articles in the <em>Blog</em> section of this page.',
+        pl: '📖 Na <strong>blogu FundMind</strong> znajdziesz artykuły o AI w finansach osobistych, lokalnym szyfrowaniu danych, modelach danych DeFi+fiat, internacjonalizacji i aktualizacjach produktu. Przejdź do sekcji <em>Blog</em> na tej stronie.',
+        de: '📖 Der <strong>FundMind Blog</strong> behandelt KI-gestützte Privatfinanzen, lokale Datenverschlüsselung, DeFi+Fiat-Datenmodelle und Produkt-Updates. Sieh dir die neuesten Artikel im <em>Blog</em>-Bereich dieser Seite an.',
+      }
+    },
+    {
+      kw: ['analityk','raport','wydatki','budzet','oszczednosc','oszczednos','cel finansow','fire','prognozy','cashflow','przeplyw','analytics','reports','budget','savings goal','fire calc','forecast','wydaje','wydaj','koszty','przychod'],
+      a: {
+        en: '📊 FundMind\'s <strong>analytics suite</strong> includes: monthly reports with income/expense breakdown, spending category heatmap, FIRE calculator, savings goals with progress bars, cash flow forecast (6 months), budget alerts at 80% of limit, net worth tracker, and AI-generated insights.',
+        pl: '📊 Pakiet analityczny FundMind obejmuje: raporty miesięczne z podziałem na przychody/wydatki, mapę cieplną kategorii, kalkulator FIRE, cele oszczędnościowe z paskami postępu, prognozę przepływów gotówki (6 miesięcy), alerty budżetowe przy 80% limitu, śledzenie majątku i insighty AI.',
+        de: '📊 FundMinds <strong>Analyse-Suite</strong> umfasst: Monatsberichte mit Einnahmen-/Ausgaben-Aufschlüsselung, Ausgaben-Heatmap, FIRE-Rechner, Sparziele mit Fortschrittsbalken, Cashflow-Prognose (6 Monate), Budgetalarme und KI-generierte Insights.',
+      }
+    },
+  ];
+
+    // ── Follow-up / "what else" / vague questions ────────────────────────
+    {
+      kw: ['co jeszcze','co wiecej','tell me more','what else','i co','a co','more info','wiecej','czym jeszcze','co oferuje','co zawiera','co dostaje','co mam','jak zaczac','jak zacznam','how to start','get started','begin','zaczac','zacząc','pomóz mi','pomoz mi','help me'],
+      a: {
+        en: '✨ Here\'s what FundMind covers:<br>• <strong>Budgeting & tracking</strong> — expenses, income, categories<br>• <strong>Crypto & DeFi</strong> — live prices, staking, gas, NFT, wallets<br>• <strong>AI Advisor</strong> — personalized insights from your own data<br>• <strong>Goals & FIRE</strong> — savings targets, retirement calculator<br>• <strong>Tax Planner</strong> — records, deadlines, reports<br>• <strong>Bank import</strong> — CSV/OFX, Open Banking coming Q2 2026<br>What would you like to know more about?',
+        pl: '✨ Oto co robi FundMind:<br>• <strong>Budżet i śledzenie</strong> — wydatki, przychody, kategorie<br>• <strong>Krypto i DeFi</strong> — kursy na żywo, staking, gas, NFT, portfele<br>• <strong>Advisor AI</strong> — spersonalizowane insighty z Twoich danych<br>• <strong>Cele i FIRE</strong> — cele oszczędnościowe, kalkulator emerytury<br>• <strong>Planer podatkowy</strong> — zapisy, terminy, raporty<br>• <strong>Import z banku</strong> — CSV/OFX, Open Banking od Q2 2026<br>O czym chcesz wiedzieć więcej?',
+        de: '✨ Das bietet FundMind:<br>• <strong>Budget & Tracking</strong> — Ausgaben, Einnahmen, Kategorien<br>• <strong>Krypto & DeFi</strong> — Live-Kurse, Staking, Gas, NFT, Wallets<br>• <strong>KI-Berater</strong> — personalisierte Einblicke aus deinen Daten<br>• <strong>Ziele & FIRE</strong> — Sparziele, Rentenrechner<br>• <strong>Steuerplaner</strong> — Einträge, Fristen, Berichte<br>• <strong>Bankimport</strong> — CSV/OFX, Open Banking ab Q2 2026<br>Worüber möchtest du mehr wissen?',
+      }
+    },
+  ];
+
+  // ── Suggested question chips per language ─────────────────────────────────
   const SUGGESTIONS = {
-    en: ['How many modules?', 'Is it free?', 'How does AI work?', 'Is it secure?', 'What crypto features?'],
-    pl: ['Ile modułów?', 'Czy to bezpłatne?', 'Jak działa AI?', 'Czy jest bezpieczne?', 'Jakie funkcje krypto?'],
-    de: ['Wie viele Module?', 'Ist es kostenlos?', 'Wie funktioniert KI?', 'Ist es sicher?', 'Krypto-Funktionen?'],
+    en: ['How many modules?', 'Is it free?', 'How does AI work?', 'Is it secure?', 'Crypto features?', 'Contact team'],
+    pl: ['Ile modułów?', 'Czy to bezpłatne?', 'Jak działa AI?', 'Czy jest bezpieczne?', 'Funkcje krypto?', 'Kontakt z zespołem'],
+    de: ['Wie viele Module?', 'Ist es kostenlos?', 'Wie funktioniert KI?', 'Ist es sicher?', 'Krypto-Funktionen?', 'Team kontaktieren'],
   };
 
   const GREET = {
-    en: `👋 Hi! I'm <strong>Marcek</strong>, FundMind's AI. Ask me anything about the app — features, pricing, security, or how to get started.`,
-    pl: `👋 Cześć! Jestem <strong>Marcek</strong>, AI FundMind. Zapytaj mnie o cokolwiek — funkcje, ceny, bezpieczeństwo, krypto lub jak zacząć.`,
-    de: `👋 Hallo! Ich bin <strong>Marcek</strong>, FundMinds KI. Frag mich alles — Funktionen, Preise, Sicherheit oder wie du anfangen kannst.`,
+    en: `👋 Hi! I'm <strong>Advisor AI</strong>, FundMind's assistant. Ask me about modules, pricing, crypto, security, roadmap, or how to get started.`,
+    pl: `👋 Cześć! Jestem <strong>Advisor AI</strong>, asystentem FundMind. Zapytaj o moduły, cennik, krypto, bezpieczeństwo, roadmapę lub jak zacząć.`,
+    de: `👋 Hallo! Ich bin <strong>Advisor AI</strong>, FundMinds KI-Assistent. Frag mich nach Modulen, Preisen, Krypto, Sicherheit oder wie du anfangen kannst.`,
   };
+
+  // ── Smart fallback — suggests topics rather than dead-ending ──────────────
   const FALLBACK = {
-    en: `I'm not sure about that — email <a href="mailto:contact@fundmindapp.com" style="color:var(--teal)">contact@fundmindapp.com</a> for detailed help, or ask about modules, pricing, AI, crypto, security, or downloads.`,
-    pl: `Nie jestem pewien — napisz na <a href="mailto:contact@fundmindapp.com" style="color:var(--teal)">contact@fundmindapp.com</a> po szczegółową pomoc, lub zapytaj o moduły, ceny, AI, krypto, bezpieczeństwo.`,
-    de: `Nicht sicher — schreib an <a href="mailto:contact@fundmindapp.com" style="color:var(--teal)">contact@fundmindapp.com</a> für Details, oder frag nach Modulen, Preisen, KI, Krypto oder Sicherheit.`,
+    en: `🤔 I didn't quite catch that. Try asking about: <em>modules, pricing, AI advisor, crypto, security, languages, bank import, roadmap, or contact</em>. Or email <a href="mailto:contact@fundmindapp.com" style="color:var(--teal)">contact@fundmindapp.com</a>.`,
+    pl: `🤔 Nie do końca rozumiem pytanie. Spróbuj zapytać o: <em>moduły, cennik, doradcę AI, krypto, bezpieczeństwo, języki, import z banku, roadmapę lub kontakt</em>. Możesz też napisać na <a href="mailto:contact@fundmindapp.com" style="color:var(--teal)">contact@fundmindapp.com</a>.`,
+    de: `🤔 Das habe ich nicht ganz verstanden. Frag nach: <em>Module, Preise, KI-Berater, Krypto, Sicherheit, Sprachen, Bankimport, Roadmap oder Kontakt</em>. Oder schreib an <a href="mailto:contact@fundmindapp.com" style="color:var(--teal)">contact@fundmindapp.com</a>.`,
   };
 
   // ── DOM refs ───────────────────────────────────────────────────────────────
@@ -3585,76 +3647,85 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
   const closeB = document.getElementById('fcw-close-btn');
   const badge  = document.getElementById('fm-chat-badge');
 
-  let open = false;
+  let isOpen = false;
   let greeted = false;
 
   function getLang(){ return window.currentFundMindLang || 'en'; }
-  function t(obj){ const l=getLang(); return obj[l] || obj.en; }
+  function t(obj){ const l = getLang(); return obj[l] || obj.en; }
+
+  function scrollToBottom(){
+    // requestAnimationFrame ensures DOM has updated before measuring
+    requestAnimationFrame(() => { msgs.scrollTop = msgs.scrollHeight; });
+  }
 
   function addMsg(html, cls){
     const d = document.createElement('div');
     d.className = 'fcw-bubble ' + cls;
-    d.innerHTML = html;
+    d.innerHTML = html; // bot messages use safe HTML from KB; user messages are esc()'d before calling addMsg
     msgs.appendChild(d);
-    msgs.scrollTop = msgs.scrollHeight;
+    scrollToBottom();
   }
 
   function showChips(){
     const sugg = SUGGESTIONS[getLang()] || SUGGESTIONS.en;
     chips.innerHTML = sugg.map(s =>
-      `<button class="fcw-chip" onclick="window._fcwAsk(this.textContent)">${s}</button>`
+      `<button class="fcw-chip" onclick="window._fcwAsk('${esc(s)}')">${esc(s)}</button>`
     ).join('');
   }
 
-  function answer(q){
-    const lq = q.toLowerCase();
-    for(const key in KB){
-      if(KB[key].q.some(kw => lq.includes(kw))){
-        return t(KB[key].a);
+  // ── Smart answer engine ────────────────────────────────────────────────────
+  function answer(raw){
+    const q = norm(raw);
+    for(let i = 0; i < KB.length; i++){
+      if(KB[i].kw.some(kw => q.includes(norm(kw)))){
+        return t(KB[i].a);
       }
     }
     return t(FALLBACK);
   }
 
+  // ── Public API for chip clicks ─────────────────────────────────────────────
   window._fcwAsk = function(q){
-    addMsg(q, 'user');
+    const safe = String(q).slice(0, 200);
+    addMsg(esc(safe), 'user');   // user bubble — always escaped
     chips.innerHTML = '';
     setTimeout(() => {
-      addMsg(answer(q), 'bot');
+      addMsg(answer(safe), 'bot');  // bot bubble — trusted HTML from KB
       showChips();
-    }, 400);
+    }, 380);
   };
 
-  function toggle(){
-    open = !open;
-    win.classList.toggle('open', open);
+  // ── Toggle open/close ──────────────────────────────────────────────────────
+  function open(){
+    isOpen = true;
+    win.classList.add('open');
     badge.style.display = 'none';
-    if(open && !greeted){
+    if(!greeted){
       greeted = true;
-      setTimeout(() => {
-        addMsg(t(GREET), 'bot');
-        showChips();
-      }, 200);
+      setTimeout(() => { addMsg(t(GREET), 'bot'); showChips(); }, 200);
     }
   }
+  function close(){
+    isOpen = false;
+    win.classList.remove('open');
+  }
+  function toggle(){ isOpen ? close() : open(); }
 
   btn.addEventListener('click', toggle);
-  closeB.addEventListener('click', () => { open = true; toggle(); });
+  closeB.addEventListener('click', close);
 
+  // ── Send ───────────────────────────────────────────────────────────────────
   function handleSend(){
     const q = input.value.trim();
     if(!q) return;
     input.value = '';
     window._fcwAsk(q);
   }
-
   send.addEventListener('click', handleSend);
-  input.addEventListener('keydown', e => { if(e.key === 'Enter') handleSend(); });
+  input.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); handleSend(); } });
 
-  // Update greeting if language changes
-  document.addEventListener('fundmind:langchange', () => {
-    if(open) showChips();
-  });
+  // ── Refresh chips on language change ──────────────────────────────────────
+  document.addEventListener('fundmind:langchange', () => { if(isOpen) showChips(); });
 })();
 </script>
 
