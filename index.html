@@ -1057,6 +1057,11 @@ footer{border-top:1px solid var(--border);padding:72px 0 44px}
 
 /* highlight row */
 .highlight-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+
+/* responsive 3-col grid */
+.resp-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-top:40px}
+@media(max-width:900px){.resp-grid-3{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.resp-grid-3{grid-template-columns:1fr}}
 @media(max-width:700px){.highlight-row{grid-template-columns:1fr}}
 .hl-box{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;text-align:center;transition:all .3s}
 .hl-box:hover{border-color:rgba(139,92,246,.3);transform:translateY(-3px)}
@@ -1791,7 +1796,7 @@ footer{border-top:1px solid var(--border);padding:72px 0 44px}
     </div>
 
     <!-- Row 2: Challenge + Friend Loans + Status Feed -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-top:40px" class="reveal">
+    <div class="resp-grid-3 reveal">
       <!-- Challenge Leaderboard -->
       <div class="soc-card">
         <div class="feat-accent-bar" style="background:linear-gradient(90deg,var(--gold2),var(--orange));border-radius:20px 20px 0 0"></div>
@@ -1959,7 +1964,7 @@ footer{border-top:1px solid var(--border);padding:72px 0 44px}
     </div>
 
     <!-- Row 3: Group Purchase + 52-Week Challenge + Loan Tracker -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-top:40px" class="reveal">
+    <div class="resp-grid-3 reveal">
 
       <!-- Group Purchase -->
       <div class="soc-card">
@@ -2221,29 +2226,29 @@ footer{border-top:1px solid var(--border);padding:72px 0 44px}
           <div class="acw-avatar">🤖</div>
           <div>
             <div class="acw-name">FundMind AI Advisor</div>
-            <div class="acw-status"><span class="glow-dot" style="width:5px;height:5px"></span> Online · Powered by Claude</div>
+            <div class="acw-status"><span class="glow-dot" style="width:5px;height:5px"></span> <span data-i18n="ai.chat.online">Online · Powered by Claude</span></div>
           </div>
         </div>
-        <div class="bubble user"><div class="bubble-name">Ty</div>Ile mogę zaoszczędzić idąc na emeryturę o 5 lat wcześniej?</div>
+        <div class="bubble user"><div class="bubble-name" data-i18n="ai.chat.you">Ty</div><span data-i18n="ai.chat.q1">Ile mogę zaoszczędzić idąc na emeryturę o 5 lat wcześniej?</span></div>
         <div class="bubble ai">
           <div class="bubble-name">◈ AI Advisor</div>
-          Analizując Twoje dane:<br><br>
+          <div data-i18n-html="ai.chat.a1">Analizując Twoje dane:<br><br>
           💰 <strong>Obecne oszczędności:</strong> 147,840 PLN<br>
           📈 <strong>Prognozowany wzrost (7%/rok):</strong> +284,000 PLN do 60. r.ż.<br>
           ⏳ <strong>Wcześniejsza emerytura (55 l.):</strong> −22% całkowitego funduszu<br><br>
-          <strong>Wniosek:</strong> Możliwe, jeśli zwiększysz odkładanie do 3,200 PLN/mies. Chcę pokazać 3 scenariusze FIRE? 🎯
+          <strong>Wniosek:</strong> Możliwe, jeśli zwiększysz odkładanie do 3,200 PLN/mies. Chcę pokazać 3 scenariusze FIRE? 🎯</div>
         </div>
-        <div class="bubble user"><div class="bubble-name">Ty</div>Tak, pokaż mi scenariusze Lean, Regular i Fat FIRE.</div>
+        <div class="bubble user"><div class="bubble-name" data-i18n="ai.chat.you">Ty</div><span data-i18n="ai.chat.q2">Tak, pokaż mi scenariusze Lean, Regular i Fat FIRE.</span></div>
         <div class="bubble ai">
           <div class="bubble-name">◈ AI Advisor</div>
           <div class="typing"><span></span><span></span><span></span></div>
         </div>
         <div class="ai-chips">
-          <div class="chip">📊 Analiza budżetu</div>
-          <div class="chip t">₿ Strategia krypto</div>
-          <div class="chip g">🏠 Kredyt hipoteczny</div>
-          <div class="chip p">🤝 Cel grupowy</div>
-          <div class="chip">💸 Optymalizacja VAT</div>
+          <div class="chip" data-i18n="ai.chip1">📊 Analiza budżetu</div>
+          <div class="chip t" data-i18n="ai.chip2">₿ Strategia krypto</div>
+          <div class="chip g" data-i18n="ai.chip3">🏠 Kredyt hipoteczny</div>
+          <div class="chip p" data-i18n="ai.chip4">🤝 Cel grupowy</div>
+          <div class="chip" data-i18n="ai.chip5">💸 Optymalizacja VAT</div>
         </div>
       </div>
       <div class="ai-content reveal-right">
@@ -3300,6 +3305,12 @@ const i18n = {
     'ai.f2.title':'FX & Crypto Analysis','ai.f2.desc':'Live market awareness for smarter currency decisions',
     'ai.f3.title':'Social Finance Insights','ai.f3.desc':'AI sees your group savings and split history for better advice',
     'ai.f4.title':'Tax Optimisation','ai.f4.desc':'Proactive deduction finding and quarterly reminders',
+    'ai.chat.online':'Online · Powered by Claude',
+    'ai.chat.you':'You',
+    'ai.chat.q1':'How much can I save by retiring 5 years earlier?',
+    'ai.chat.a1':'Analysing your data:<br><br>💰 <strong>Current savings:</strong> $147,840<br>📈 <strong>Projected growth (7%/yr):</strong> +$284,000 by age 60<br>⏳ <strong>Early retirement (age 55):</strong> −22% of total fund<br><br><strong>Conclusion:</strong> Possible if you increase savings to $3,200/month. Show 3 FIRE scenarios? 🎯',
+    'ai.chat.q2':'Yes, show me the Lean, Regular and Fat FIRE scenarios.',
+    'ai.chip1':'📊 Budget analysis','ai.chip2':'₿ Crypto strategy','ai.chip3':'🏠 Mortgage','ai.chip4':'🤝 Group goal','ai.chip5':'💸 VAT optimisation',
     // CURRENCY
     'currency.badge':'💱 Smart Currency','currency.h2':'Smart Currency',
     'currency.h3':'One app for\nevery currency',
@@ -3477,6 +3488,12 @@ const i18n = {
     'ai.f2.title':'Analiza FX i Krypto','ai.f2.desc':'Świadomość rynku na żywo dla mądrzejszych decyzji walutowych',
     'ai.f3.title':'Spostrzeżenia Social Finance','ai.f3.desc':'AI widzi Twoje grupowe oszczędności i historię podziałów dla lepszych porad',
     'ai.f4.title':'Optymalizacja Podatkowa','ai.f4.desc':'Proaktywne szukanie odliczeń i kwartalne przypomnienia',
+    'ai.chat.online':'Online · Powered by Claude',
+    'ai.chat.you':'Ty',
+    'ai.chat.q1':'Ile mogę zaoszczędzić idąc na emeryturę o 5 lat wcześniej?',
+    'ai.chat.a1':'Analizując Twoje dane:<br><br>💰 <strong>Obecne oszczędności:</strong> 147 840 PLN<br>📈 <strong>Prognozowany wzrost (7%/rok):</strong> +284 000 PLN do 60. r.ż.<br>⏳ <strong>Wcześniejsza emerytura (55 l.):</strong> −22% całkowitego funduszu<br><br><strong>Wniosek:</strong> Możliwe, jeśli zwiększysz odkładanie do 3 200 PLN/mies. Chcę pokazać 3 scenariusze FIRE? 🎯',
+    'ai.chat.q2':'Tak, pokaż mi scenariusze Lean, Regular i Fat FIRE.',
+    'ai.chip1':'📊 Analiza budżetu','ai.chip2':'₿ Strategia krypto','ai.chip3':'🏠 Kredyt hipoteczny','ai.chip4':'🤝 Cel grupowy','ai.chip5':'💸 Optymalizacja VAT',
     'currency.badge':'💱 Inteligentna Waluta','currency.h2':'Inteligentna Waluta',
     'currency.h3':'Jedna aplikacja dla\nkażdej waluty',
     'currency.sub':'30+ walut FIAT i każdy główny kryptoaktywa — śledzone, przeliczane i analizowane w czasie rzeczywistym.',
@@ -3641,6 +3658,12 @@ const i18n = {
     'ai.f2.title':'FX & Krypto-Analyse','ai.f2.desc':'Live-Marktbewusstsein für klügere Währungsentscheidungen',
     'ai.f3.title':'Social-Finance-Einblicke','ai.f3.desc':'KI sieht deine Gruppenersparnisse und Split-Geschichte für bessere Beratung',
     'ai.f4.title':'Steueroptimierung','ai.f4.desc':'Proaktive Suche nach Abzügen und vierteljährliche Erinnerungen',
+    'ai.chat.online':'Online · Powered by Claude',
+    'ai.chat.you':'Du',
+    'ai.chat.q1':'Wie viel kann ich sparen, wenn ich 5 Jahre früher in Rente gehe?',
+    'ai.chat.a1':'Analyse deiner Daten:<br><br>💰 <strong>Aktuelle Ersparnisse:</strong> 147.840 €<br>📈 <strong>Prognostiziertes Wachstum (7%/J.):</strong> +284.000 € bis 60.<br>⏳ <strong>Frührente (55 J.):</strong> −22% des Gesamtfonds<br><br><strong>Fazit:</strong> Möglich, wenn du dein Sparen auf 3.200 €/Monat erhöhst. 3 FIRE-Szenarien anzeigen? 🎯',
+    'ai.chat.q2':'Ja, zeig mir die Lean, Regular und Fat FIRE Szenarien.',
+    'ai.chip1':'📊 Budgetanalyse','ai.chip2':'₿ Krypto-Strategie','ai.chip3':'🏠 Hypothek','ai.chip4':'🤝 Gruppenziel','ai.chip5':'💸 MwSt-Optimierung',
     'currency.badge':'💱 Intelligente Währung','currency.h2':'Intelligente Währung',
     'currency.h3':'Eine App für\njede Währung',
     'currency.sub':'30+ FIAT-Währungen und jede wichtige Krypto — in Echtzeit verfolgt, konvertiert und analysiert.',
@@ -3781,6 +3804,12 @@ const i18n = {
     'social.quiz.badge':'NUEVO — Cuestionario','social.quiz.h3':'Quiz Financiero\nTorneo Global','social.quiz.desc':'Compite con usuarios de FundMind de todo el mundo en cuestionarios de finanzas y cripto.',
     'social.quiz.f1':'10 categorías: FIAT, Cripto, DeFi, Impuestos, Inversiones...','social.quiz.f2':'Modos: Solo, Batalla 1v1, Torneo de 16 jugadores','social.quiz.f3':'Ranking global con banderas de países y XP','social.quiz.f4':'Insignias: Cripto Master, Analista, Tax Pro...',
     'ai.badge':'Inteligencia IA','ai.h2':'Tu CFO personal,\ndisponible 24/7',
+    'ai.chat.online':'En línea · Powered by Claude',
+    'ai.chat.you':'Tú',
+    'ai.chat.q1':'¿Cuánto puedo ahorrar si me jubilo 5 años antes?',
+    'ai.chat.a1':'Analizando tus datos:<br><br>💰 <strong>Ahorros actuales:</strong> 147.840 €<br>📈 <strong>Crecimiento proyectado (7%/año):</strong> +284.000 € hasta los 60<br>⏳ <strong>Jubilación anticipada (55 años):</strong> −22% del fondo total<br><br><strong>Conclusión:</strong> Posible si aumentas el ahorro a 3.200 €/mes. ¿Mostrar 3 escenarios FIRE? 🎯',
+    'ai.chat.q2':'Sí, muéstrame los escenarios Lean, Regular y Fat FIRE.',
+    'ai.chip1':'📊 Análisis de presupuesto','ai.chip2':'₿ Estrategia cripto','ai.chip3':'🏠 Hipoteca','ai.chip4':'🤝 Meta grupal','ai.chip5':'💸 Optimización IVA',
     'currency.badge':'💱 Moneda Inteligente','currency.h2':'Moneda Inteligente','currency.h3':'Una app para\ncada moneda',
     'currency.sub':'30+ monedas FIAT y cada criptoactivo principal — rastreados, convertidos y analizados en tiempo real.',
     'currency.tab.fiat':'💳 Monedas FIAT','currency.tab.crypto':'₿ Activos Cripto',
@@ -3855,6 +3884,12 @@ const i18n = {
     'social.quiz.badge':'NOUVEAU — Quiz','social.quiz.h3':'Quiz Financier\nTournoi Mondial','social.quiz.desc':'Rivalisez avec des utilisateurs FundMind du monde entier dans des quiz financiers et crypto.',
     'social.quiz.f1':'10 catégories: FIAT, Crypto, DeFi, Fiscalité, Investissements...','social.quiz.f2':'Modes: Solo, Bataille 1v1, Tournoi 16 joueurs','social.quiz.f3':'Classement mondial avec drapeaux et XP','social.quiz.f4':'Badges: Crypto Master, Analyste, Tax Pro...',
     'ai.badge':'Intelligence IA','ai.h2':'Votre CFO personnel,\ndisponible 24/7',
+    'ai.chat.online':'En ligne · Powered by Claude',
+    'ai.chat.you':'Vous',
+    'ai.chat.q1':'Combien puis-je économiser en prenant ma retraite 5 ans plus tôt ?',
+    'ai.chat.a1':'Analyse de vos données :<br><br>💰 <strong>Épargne actuelle :</strong> 147 840 €<br>📈 <strong>Croissance projetée (7%/an) :</strong> +284 000 € à 60 ans<br>⏳ <strong>Retraite anticipée (55 ans) :</strong> −22% du fonds total<br><br><strong>Conclusion :</strong> Possible si vous épargnez 3 200 €/mois. Afficher 3 scénarios FIRE ? 🎯',
+    'ai.chat.q2':'Oui, montrez-moi les scénarios Lean, Regular et Fat FIRE.',
+    'ai.chip1':'📊 Analyse budget','ai.chip2':'₿ Stratégie crypto','ai.chip3':'🏠 Hypothèque','ai.chip4':'🤝 Objectif groupe','ai.chip5':'💸 Optimisation TVA',
     'currency.badge':'💱 Devise Intelligente','currency.h2':'Devise Intelligente','currency.h3':'Une app pour\nchaque devise',
     'currency.sub':'30+ devises FIAT et chaque crypto principal — suivis, convertis et analysés en temps réel.',
     'currency.tab.fiat':'💳 Devises FIAT','currency.tab.crypto':'₿ Crypto Assets',
@@ -3926,6 +3961,12 @@ const i18n = {
     'social.quiz.badge':'NOVO — Quiz','social.quiz.h3':'Quiz Financeiro\nTorneio Global','social.quiz.desc':'Compete com utilizadores do FundMind em todo o mundo em quizzes de finanças e cripto.',
     'social.quiz.f1':'10 categorias: FIAT, Cripto, DeFi, Impostos, Investimentos...','social.quiz.f2':'Modos: Solo, Batalha 1v1, Torneio 16 jogadores','social.quiz.f3':'Ranking global com bandeiras e XP','social.quiz.f4':'Medalhas: Cripto Master, Analista, Tax Pro...',
     'ai.badge':'Inteligência IA','ai.h2':'O seu CFO pessoal,\ndisponível 24/7',
+    'ai.chat.online':'Online · Powered by Claude',
+    'ai.chat.you':'Você',
+    'ai.chat.q1':'Quanto posso poupar se me reformar 5 anos mais cedo?',
+    'ai.chat.a1':'Analisando os seus dados:<br><br>💰 <strong>Poupanças atuais:</strong> 147.840 €<br>📈 <strong>Crescimento projetado (7%/ano):</strong> +284.000 € até aos 60<br>⏳ <strong>Reforma antecipada (55 anos):</strong> −22% do fundo total<br><br><strong>Conclusão:</strong> Possível se aumentar a poupança para 3.200 €/mês. Mostrar 3 cenários FIRE? 🎯',
+    'ai.chat.q2':'Sim, mostre-me os cenários Lean, Regular e Fat FIRE.',
+    'ai.chip1':'📊 Análise de orçamento','ai.chip2':'₿ Estratégia cripto','ai.chip3':'🏠 Hipoteca','ai.chip4':'🤝 Meta de grupo','ai.chip5':'💸 Otimização IVA',
     'currency.badge':'💱 Moeda Inteligente','currency.h2':'Moeda Inteligente','currency.h3':'Uma app para\ncada moeda',
     'currency.sub':'30+ moedas FIAT e cada principal cripto — rastreados, convertidos e analisados em tempo real.',
     'currency.tab.fiat':'💳 Moedas FIAT','currency.tab.crypto':'₿ Ativos Cripto',
@@ -3997,6 +4038,12 @@ const i18n = {
     'social.quiz.badge':'НОВИНКА — Викторина','social.quiz.h3':'Финансовая Викторина\nМировой Турнир','social.quiz.desc':'Соревнуйтесь с пользователями FundMind по всему миру в финансовых и крипто-викторинах.',
     'social.quiz.f1':'10 категорий: FIAT, Крипто, DeFi, Налоги, Инвестиции...','social.quiz.f2':'Режимы: Соло, Дуэль 1v1, Турнир 16 игроков','social.quiz.f3':'Глобальный рейтинг с флагами стран и XP','social.quiz.f4':'Значки: Крипто-мастер, Аналитик, Tax Pro...',
     'ai.badge':'Интеллект ИИ','ai.h2':'Ваш личный CFO,\nдоступный 24/7',
+    'ai.chat.online':'Онлайн · Powered by Claude',
+    'ai.chat.you':'Вы',
+    'ai.chat.q1':'Сколько я сэкономлю, если выйду на пенсию на 5 лет раньше?',
+    'ai.chat.a1':'Анализирую ваши данные:<br><br>💰 <strong>Текущие сбережения:</strong> 147 840 ₽<br>📈 <strong>Прогнозируемый рост (7%/год):</strong> +284 000 ₽ к 60 годам<br>⏳ <strong>Ранний выход на пенсию (55 лет):</strong> −22% от общего фонда<br><br><strong>Вывод:</strong> Возможно, если увеличить сбережения до 3 200 ₽/мес. Показать 3 сценария FIRE? 🎯',
+    'ai.chat.q2':'Да, покажи мне сценарии Lean, Regular и Fat FIRE.',
+    'ai.chip1':'📊 Анализ бюджета','ai.chip2':'₿ Крипто-стратегия','ai.chip3':'🏠 Ипотека','ai.chip4':'🤝 Групповая цель','ai.chip5':'💸 Оптимизация НДС',
     'currency.badge':'💱 Умная валюта','currency.h2':'Умная валюта','currency.h3':'Одно приложение для\nкаждой валюты',
     'currency.sub':'30+ фиатных валют и каждый крупный криптоактив — отслеживаются, конвертируются и анализируются в реальном времени.',
     'currency.tab.fiat':'💳 Фиатные валюты','currency.tab.crypto':'₿ Криптоактивы',
@@ -4068,6 +4115,12 @@ const i18n = {
     'social.quiz.badge':'全新 — 知识竞赛','social.quiz.h3':'金融问答\n全球锦标赛','social.quiz.desc':'与全球FundMind用户竞争金融和加密货币知识问答。赚取XP，攀登排行榜，赢得专家徽章！',
     'social.quiz.f1':'10个类别：法币、加密、DeFi、税务、投资...','social.quiz.f2':'模式：单人、1v1对战、16人锦标赛','social.quiz.f3':'带国家旗帜和XP的全球排名','social.quiz.f4':'徽章：加密大师、分析师、税务专家...',
     'ai.badge':'AI智能','ai.h2':'您的私人CFO，\n全天候可用',
+    'ai.chat.online':'在线 · Powered by Claude',
+    'ai.chat.you':'你',
+    'ai.chat.q1':'如果我提前5年退休，能节省多少钱？',
+    'ai.chat.a1':'分析您的数据：<br><br>💰 <strong>当前储蓄：</strong> 147,840元<br>📈 <strong>预测增长（7%/年）：</strong> 到60岁+284,000元<br>⏳ <strong>提前退休（55岁）：</strong> −22%总资金<br><br><strong>结论：</strong> 如果您每月储蓄增至3,200元，则可行。显示3个FIRE场景？🎯',
+    'ai.chat.q2':'是的，显示Lean、Regular和Fat FIRE场景。',
+    'ai.chip1':'📊 预算分析','ai.chip2':'₿ 加密策略','ai.chip3':'🏠 抵押贷款','ai.chip4':'🤝 团体目标','ai.chip5':'💸 增值税优化',
     'currency.badge':'💱 智能货币','currency.h2':'智能货币','currency.h3':'一款应用\n适配每种货币',
     'currency.sub':'30+法币和每种主要加密资产——实时追踪、兑换和分析。',
     'currency.tab.fiat':'💳 法币','currency.tab.crypto':'₿ 加密资产',
@@ -4139,6 +4192,12 @@ const i18n = {
     'social.quiz.badge':'جديد — المسابقة','social.quiz.h3':'مسابقة المالية\nبطولة عالمية','social.quiz.desc':'تنافس مع مستخدمي FundMind حول العالم في مسابقات التمويل والعملات المشفرة.',
     'social.quiz.f1':'10 فئات: عملات فيات، كريبتو، DeFi، ضرائب، استثمارات...','social.quiz.f2':'أوضاع: فردي، مباراة 1v1، بطولة 16 لاعباً','social.quiz.f3':'تصنيف عالمي مع أعلام الدول وXP','social.quiz.f4':'شارات: خبير التشفير، المحلل، خبير الضرائب...',
     'ai.badge':'ذكاء اصطناعي','ai.h2':'مديرك المالي الشخصي،\nمتاح 24/7',
+    'ai.chat.online':'متصل · Powered by Claude',
+    'ai.chat.you':'أنت',
+    'ai.chat.q1':'كم يمكنني توفيره إذا تقاعدت قبل 5 سنوات؟',
+    'ai.chat.a1':'تحليل بياناتك:<br><br>💰 <strong>المدخرات الحالية:</strong> 147,840 ريال<br>📈 <strong>النمو المتوقع (7%/سنة):</strong> +284,000 ريال حتى سن 60<br>⏳ <strong>التقاعد المبكر (55 عامًا):</strong> −22% من إجمالي الصندوق<br><br><strong>الاستنتاج:</strong> ممكن إذا زدت ادخارك إلى 3,200 ريال/شهر. هل تريد عرض 3 سيناريوهات FIRE? 🎯',
+    'ai.chat.q2':'نعم، أرني سيناريوهات Lean وRegular وFat FIRE.',
+    'ai.chip1':'📊 تحليل الميزانية','ai.chip2':'₿ استراتيجية الكريبتو','ai.chip3':'🏠 الرهن العقاري','ai.chip4':'🤝 هدف المجموعة','ai.chip5':'💸 تحسين ضريبة القيمة المضافة',
     'currency.badge':'💱 عملة ذكية','currency.h2':'عملة ذكية','currency.h3':'تطبيق واحد\nلكل عملة',
     'currency.sub':'30+ عملة ورقية وكل أصل رقمي رئيسي — يُتتبع ويُحوّل ويُحلل في الوقت الفعلي.',
     'currency.tab.fiat':'💳 العملات الورقية','currency.tab.crypto':'₿ الأصول الرقمية',
@@ -4198,6 +4257,13 @@ function applyI18n(lang){
         }
       }
     }
+  });
+  // Handle innerHTML translations (for rich HTML content like AI chat bubbles)
+  document.querySelectorAll('[data-i18n-html]').forEach(function(el){
+    var key = el.getAttribute('data-i18n-html');
+    var val = t[key] || en[key];
+    if(!val) return;
+    el.innerHTML = val;
   });
   document.documentElement.setAttribute('lang',lang);
   document.body.classList.toggle('rtl-lang',lang==='ar');
