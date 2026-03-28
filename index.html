@@ -106,27 +106,131 @@ nav{
   transition:background .3s;
 }
 .nav-inner{display:flex;align-items:center;justify-content:space-between;height:68px}
-.logo-wrap{display:flex;align-items:center;gap:12px;cursor:pointer}
-.logo-3d{
-  position:relative;width:32px;height:32px;
-  transform-style:preserve-3d;
-  animation:logo-spin 8s linear infinite;
+/* ── LOGO — premium animated ── */
+.logo-wrap{display:flex;align-items:center;gap:11px;cursor:pointer;text-decoration:none}
+
+/* Icon container */
+.logo-icon{
+  position:relative;width:40px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
 }
-@keyframes logo-spin{0%{transform:rotateY(0deg) rotateX(10deg)}100%{transform:rotateY(360deg) rotateX(10deg)}}
-.logo-face{
-  position:absolute;width:24px;height:24px;
-  top:4px;left:4px;border-radius:6px;
-  border:2px solid var(--v);transform:rotate(45deg);
+/* Orbital particles */
+.logo-particle{
+  position:absolute;width:4px;height:4px;border-radius:50%;
+  background:var(--v2);opacity:.8;
 }
-.logo-core{
-  position:absolute;width:10px;height:10px;
-  background:var(--v);border-radius:3px;
-  top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);
-  box-shadow:0 0 12px var(--v),0 0 24px rgba(139,92,246,.4);
+.logo-particle.p1{animation:orbit1 3.2s linear infinite}
+.logo-particle.p2{animation:orbit2 3.2s linear infinite}
+.logo-particle.p3{animation:orbit3 3.2s linear infinite}
+@keyframes orbit1{
+  0%  {transform:translate(14px,0)}
+  25% {transform:translate(0,14px)}
+  50% {transform:translate(-14px,0)}
+  75% {transform:translate(0,-14px)}
+  100%{transform:translate(14px,0)}
 }
+@keyframes orbit2{
+  0%  {transform:translate(-7px,12px)}
+  25% {transform:translate(-14px,-7px)}
+  50% {transform:translate(7px,-12px)}
+  75% {transform:translate(14px,7px)}
+  100%{transform:translate(-7px,12px)}
+}
+@keyframes orbit3{
+  0%  {transform:translate(-7px,-12px)}
+  25% {transform:translate(14px,-7px)}
+  50% {transform:translate(7px,12px)}
+  75% {transform:translate(-14px,7px)}
+  100%{transform:translate(-7px,-12px)}
+}
+/* Outer ring */
+.logo-ring-outer{
+  position:absolute;width:30px;height:30px;border-radius:5px;
+  border:1px solid var(--v);transform:rotate(45deg);
+  animation:ring-pulse-out 2.6s ease-in-out infinite;
+}
+@keyframes ring-pulse-out{0%,100%{opacity:.12;transform:rotate(45deg) scale(1)}50%{opacity:.30;transform:rotate(45deg) scale(1.22)}}
+/* Mid ring */
+.logo-ring-mid{
+  position:absolute;width:20px;height:20px;border-radius:4px;
+  border:1.5px solid var(--v2);transform:rotate(45deg);
+  animation:ring-pulse-mid 2.6s ease-in-out infinite;
+}
+@keyframes ring-pulse-mid{0%,100%{opacity:.42;transform:rotate(45deg) scale(1)}50%{opacity:.88;transform:rotate(45deg) scale(1.09)}}
+/* Core diamond */
+.logo-core-gem{
+  position:absolute;width:12px;height:12px;border-radius:2.5px;
+  background:var(--v);transform:rotate(45deg);
+  box-shadow:0 0 10px var(--v),0 0 22px rgba(139,92,246,.45);
+  animation:gem-glow 2.6s ease-in-out infinite;
+}
+@keyframes gem-glow{0%,100%{opacity:.55;box-shadow:0 0 8px var(--v),0 0 18px rgba(139,92,246,.3)}50%{opacity:1;box-shadow:0 0 14px var(--v),0 0 32px rgba(139,92,246,.6)}}
+/* Center dot */
+.logo-center-dot{
+  position:absolute;width:3px;height:3px;border-radius:50%;
+  background:#fff;opacity:.9;
+}
+/* Wordmark container */
+.logo-wordmark{display:flex;flex-direction:column;gap:1px}
+/* Name line with scan shimmer */
+.logo-name-wrap{position:relative;overflow:hidden;display:inline-block}
+.logo-name-text{
+  font-family:"Space Grotesk",sans-serif;
+  font-size:19px;font-weight:800;letter-spacing:2px;
+  background:linear-gradient(135deg,#fff 0%,var(--v2) 55%,var(--teal) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:name-breathe 2.6s ease-in-out infinite;
+}
+@keyframes name-breathe{0%,100%{opacity:.84}50%{opacity:1}}
+/* Scan shimmer bar */
+.logo-scan-bar{
+  position:absolute;top:0;bottom:0;width:24px;border-radius:4px;
+  background:linear-gradient(90deg,transparent,rgba(179,153,255,.55),transparent);
+  animation:scan-sweep 4s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes scan-sweep{
+  0%{transform:translateX(-40px);opacity:0}
+  10%{opacity:1}
+  60%{transform:translateX(160px);opacity:1}
+  70%{opacity:0}
+  100%{transform:translateX(160px);opacity:0}
+}
+/* Sub row */
+.logo-sub-row{display:flex;align-items:center;gap:5px;margin-top:0}
+.logo-dualfi-text{
+  font-size:9.5px;font-weight:800;letter-spacing:2px;
+  color:var(--v2);
+  animation:name-breathe 2.6s ease-in-out infinite;
+  animation-delay:.4s;
+}
+/* AI badge */
+.logo-ai-badge{
+  display:inline-flex;align-items:center;
+  padding:1px 5px;border-radius:5px;
+  border:1px solid rgba(179,153,255,.55);
+  background:rgba(139,92,246,.18);
+  font-size:8.5px;font-weight:900;letter-spacing:.5px;
+  color:var(--v2);
+  animation:ai-blink 5s ease-in-out infinite;
+}
+@keyframes ai-blink{
+  0%,85%,100%{opacity:1}
+  87%{opacity:.25}89%{opacity:1}91%{opacity:.25}93%{opacity:1}
+}
+/* Pulse dot */
+.logo-pulse-dot{
+  width:4px;height:4px;border-radius:50%;
+  background:var(--v2);
+  animation:pulse-dot 2.6s ease-in-out infinite;
+}
+@keyframes pulse-dot{0%,100%{opacity:.3;transform:scale(.7)}50%{opacity:1;transform:scale(1.3)}}
+
+/* Legacy .logo-text kept for footer (overridden below) */
 .logo-text{
   font-family:"Space Grotesk",sans-serif;
-  font-size:20px;font-weight:800;letter-spacing:.5px;
+  font-size:18px;font-weight:800;letter-spacing:.5px;
   background:linear-gradient(135deg,#fff 0%,var(--v2) 60%,var(--teal) 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
@@ -1153,8 +1257,28 @@ footer{border-top:1px solid var(--border);padding:72px 0 44px}
 <nav id="nav">
   <div class="container nav-inner">
     <a href="#" class="logo-wrap">
-      <div class="logo-3d"><div class="logo-face front"></div><div class="logo-core"></div></div>
-      <span class="logo-text">FundMind <span style="font-size:13px;letter-spacing:2px;opacity:0.72;font-weight:700">DualFi AI</span></span>
+      <!-- Animated diamond icon -->
+      <div class="logo-icon">
+        <div class="logo-particle p1"></div>
+        <div class="logo-particle p2"></div>
+        <div class="logo-particle p3"></div>
+        <div class="logo-ring-outer"></div>
+        <div class="logo-ring-mid"></div>
+        <div class="logo-core-gem"></div>
+        <div class="logo-center-dot"></div>
+      </div>
+      <!-- Premium wordmark -->
+      <div class="logo-wordmark">
+        <div class="logo-name-wrap">
+          <span class="logo-name-text">FundMind</span>
+          <div class="logo-scan-bar"></div>
+        </div>
+        <div class="logo-sub-row">
+          <span class="logo-dualfi-text">DualFI</span>
+          <span class="logo-ai-badge">AI</span>
+          <span class="logo-pulse-dot"></span>
+        </div>
+      </div>
     </a>
     <div class="nav-links">
       <a href="#features" data-i18n="nav.features">Features</a>
@@ -2284,13 +2408,13 @@ footer{border-top:1px solid var(--border);padding:72px 0 44px}
         <div class="acw-header">
           <div class="acw-avatar">🤖</div>
           <div>
-            <div class="acw-name">FundMind AI Advisor</div>
+            <div class="acw-name" data-i18n="ai.chat.name">FundMind AI Advisor</div>
             <div class="acw-status"><span class="glow-dot" style="width:5px;height:5px"></span> <span data-i18n="ai.chat.online">Online · Powered by Claude</span></div>
           </div>
         </div>
         <div class="bubble user"><div class="bubble-name" data-i18n="ai.chat.you">Ty</div><span data-i18n="ai.chat.q1">Ile mogę zaoszczędzić idąc na emeryturę o 5 lat wcześniej?</span></div>
         <div class="bubble ai">
-          <div class="bubble-name">◈ AI Advisor</div>
+          <div class="bubble-name" data-i18n="ai.chat.advisor">◈ AI Advisor</div>
           <div data-i18n-html="ai.chat.a1">Analizując Twoje dane:<br><br>
           💰 <strong>Obecne oszczędności:</strong> 147,840 PLN<br>
           📈 <strong>Prognozowany wzrost (7%/rok):</strong> +284,000 PLN do 60. r.ż.<br>
@@ -2299,7 +2423,7 @@ footer{border-top:1px solid var(--border);padding:72px 0 44px}
         </div>
         <div class="bubble user"><div class="bubble-name" data-i18n="ai.chat.you">Ty</div><span data-i18n="ai.chat.q2">Tak, pokaż mi scenariusze Lean, Regular i Fat FIRE.</span></div>
         <div class="bubble ai">
-          <div class="bubble-name">◈ AI Advisor</div>
+          <div class="bubble-name" data-i18n="ai.chat.advisor">◈ AI Advisor</div>
           <div class="typing"><span></span><span></span><span></span></div>
         </div>
         <div class="ai-chips">
@@ -3006,8 +3130,22 @@ footer{border-top:1px solid var(--border);padding:72px 0 44px}
     <div class="footer-inner">
       <div class="footer-brand">
         <a href="#" class="logo-wrap" style="margin-bottom:0">
-          <div class="logo-3d" style="animation:none"><div class="logo-face front"></div><div class="logo-core"></div></div>
-          <span class="logo-text" style="font-size:18px">FundMind</span>
+          <div class="logo-icon">
+            <div class="logo-ring-outer"></div>
+            <div class="logo-ring-mid"></div>
+            <div class="logo-core-gem"></div>
+            <div class="logo-center-dot"></div>
+          </div>
+          <div class="logo-wordmark">
+            <div class="logo-name-wrap">
+              <span class="logo-name-text">FundMind</span>
+              <div class="logo-scan-bar"></div>
+            </div>
+            <div class="logo-sub-row">
+              <span class="logo-dualfi-text">DualFI</span>
+              <span class="logo-ai-badge">AI</span>
+            </div>
+          </div>
         </a>
         <p data-i18n="footer.brand.desc">The most complete personal finance app — AI-powered, social, and beautifully designed. Available on iOS and Android.</p>
         <div class="footer-socials" style="margin-top:18px">
@@ -3365,6 +3503,8 @@ const i18n = {
     'ai.f3.title':'Social Finance Insights','ai.f3.desc':'AI sees your group savings and split history for better advice',
     'ai.f4.title':'Tax Optimisation','ai.f4.desc':'Proactive deduction finding and quarterly reminders',
     'ai.chat.online':'Online · Powered by Claude',
+    'ai.chat.name':'FundMind AI Advisor',
+    'ai.chat.advisor':'◈ AI Advisor',
     'ai.chat.you':'You',
     'ai.chat.q1':'How much can I save by retiring 5 years earlier?',
     'ai.chat.a1':'Analysing your data:<br><br>💰 <strong>Current savings:</strong> $147,840<br>📈 <strong>Projected growth (7%/yr):</strong> +$284,000 by age 60<br>⏳ <strong>Early retirement (age 55):</strong> −22% of total fund<br><br><strong>Conclusion:</strong> Possible if you increase savings to $3,200/month. Show 3 FIRE scenarios? 🎯',
@@ -3548,6 +3688,8 @@ const i18n = {
     'ai.f3.title':'Spostrzeżenia Social Finance','ai.f3.desc':'AI widzi Twoje grupowe oszczędności i historię podziałów dla lepszych porad',
     'ai.f4.title':'Optymalizacja Podatkowa','ai.f4.desc':'Proaktywne szukanie odliczeń i kwartalne przypomnienia',
     'ai.chat.online':'Online · Powered by Claude',
+    'ai.chat.name':'FundMind AI Advisor',
+    'ai.chat.advisor':'◈ AI Advisor',
     'ai.chat.you':'Ty',
     'ai.chat.q1':'Ile mogę zaoszczędzić idąc na emeryturę o 5 lat wcześniej?',
     'ai.chat.a1':'Analizując Twoje dane:<br><br>💰 <strong>Obecne oszczędności:</strong> 147 840 PLN<br>📈 <strong>Prognozowany wzrost (7%/rok):</strong> +284 000 PLN do 60. r.ż.<br>⏳ <strong>Wcześniejsza emerytura (55 l.):</strong> −22% całkowitego funduszu<br><br><strong>Wniosek:</strong> Możliwe, jeśli zwiększysz odkładanie do 3 200 PLN/mies. Chcę pokazać 3 scenariusze FIRE? 🎯',
@@ -3718,6 +3860,8 @@ const i18n = {
     'ai.f3.title':'Social-Finance-Einblicke','ai.f3.desc':'KI sieht deine Gruppenersparnisse und Split-Geschichte für bessere Beratung',
     'ai.f4.title':'Steueroptimierung','ai.f4.desc':'Proaktive Suche nach Abzügen und vierteljährliche Erinnerungen',
     'ai.chat.online':'Online · Powered by Claude',
+    'ai.chat.name':'FundMind KI-Berater',
+    'ai.chat.advisor':'◈ KI-Berater',
     'ai.chat.you':'Du',
     'ai.chat.q1':'Wie viel kann ich sparen, wenn ich 5 Jahre früher in Rente gehe?',
     'ai.chat.a1':'Analyse deiner Daten:<br><br>💰 <strong>Aktuelle Ersparnisse:</strong> 147.840 €<br>📈 <strong>Prognostiziertes Wachstum (7%/J.):</strong> +284.000 € bis 60.<br>⏳ <strong>Frührente (55 J.):</strong> −22% des Gesamtfonds<br><br><strong>Fazit:</strong> Möglich, wenn du dein Sparen auf 3.200 €/Monat erhöhst. 3 FIRE-Szenarien anzeigen? 🎯',
