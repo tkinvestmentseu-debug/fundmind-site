@@ -509,8 +509,8 @@ h1{
 .sbm-row:last-child{border-bottom:none}
 .sbm-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
 .sbm-name{font-size:12px;font-weight:600;flex:1}
-.sbm-amount{font-size:13px;font-weight:800}
-.sbm-status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px}
+.sbm-amount{font-size:13px;font-weight:800;white-space:nowrap;flex-shrink:0}
+.sbm-status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap;flex-shrink:0}
 .sbm-paid{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.2)}
 .sbm-owes{background:rgba(255,107,107,.10);color:var(--red);border:1px solid rgba(255,107,107,.2)}
 
@@ -602,7 +602,7 @@ h1{
 .chm-name{font-size:12px;font-weight:700}
 .chm-bar-wrap{height:4px;background:rgba(255,255,255,.06);border-radius:2px;margin-top:4px;width:100%}
 .chm-bar{height:100%;border-radius:2px}
-.chm-saved{font-size:11px;font-weight:800;color:var(--green)}
+.chm-saved{font-size:11px;font-weight:800;color:var(--green);white-space:nowrap;flex-shrink:0}
 .chm-you{background:rgba(139,92,246,.1);border-radius:10px;padding:2px 6px;margin-left:4px;font-size:9px;font-weight:800;color:var(--v2)}
 
 /* ── CURRENCY SECTION ── */
@@ -987,6 +987,9 @@ footer{border-top:1px solid var(--border);padding:72px 0 44px}
   .bubble.user{margin-left:14px}
   .modules-marquee-wrap{margin-top:34px}
   .social-hero-grid{grid-template-columns:1fr}
+  .split-bill-mockup{box-shadow:0 10px 30px rgba(0,0,0,.3)}
+  .sbm-total{font-size:22px}
+  .group-savings-mockup .gsm-amount{font-size:22px}
   .currency-inner{grid-template-columns:1fr}
   .pricing-toggle{gap:10px;margin-bottom:28px;flex-wrap:wrap}
   .price-amount{font-size:42px}
@@ -1009,6 +1012,62 @@ footer{border-top:1px solid var(--border);padding:72px 0 44px}
   .social-feature-cards{grid-template-columns:1fr}
   .faq-q{font-size:14px;padding:16px 18px}
   .faq-a-inner{padding:0 18px 16px}
+  /* ── Social cards — mobile ── */
+  .soc-card{padding:14px}
+  .soc-icon{font-size:22px;margin-bottom:8px}
+  .soc-card h4{font-size:13px}
+  .soc-card p{font-size:11.5px}
+  .split-bill-mockup,.group-savings-mockup{padding:14px}
+  .challenge-mockup,.loan-tracker,.status-feed{padding:12px}
+  /* Restaurant table — fluid */
+  .rt-table{width:100%;max-width:280px;height:auto;aspect-ratio:1/1}
+  .rt-seat{width:min(68px,25%)}
+  .rt-center{width:min(96px,38%);height:auto;aspect-ratio:1/1}
+  .rt-center-amount{font-size:clamp(13px,3.8vw,22px)}
+  .rt-center-label{font-size:6px}
+  .rt-center-currency,.rt-center-sub{font-size:7px}
+  .rt-seat-name{font-size:8px}
+  .rt-seat-amt{font-size:7px}
+  .rt-badge{font-size:6px;padding:1px 3px}
+  .rt-avatar{width:22px;height:22px;font-size:11px}
+  .rt-btn{padding:6px 10px;font-size:10px;gap:4px}
+  .rt-btn-text{display:none}
+  .rt-actions{margin-top:10px;gap:8px}
+  /* Group savings */
+  .gsm-amount{font-size:20px}
+  /* Loan tracker */
+  .lt-summary{gap:5px}
+  .lt-box{padding:8px 5px}
+  .lt-box-label{font-size:7px;letter-spacing:.1px}
+  .lt-box-val{font-size:13px}
+  /* Status feed */
+  .sf-avatar{width:26px;height:26px;font-size:12px}
+  .sf-text{font-size:10px}
+  .sf-amount{font-size:11px;white-space:nowrap}
+  /* Challenge */
+  .chm-row{gap:7px;padding:7px 0}
+  .chm-rank{font-size:14px;width:20px}
+  .chm-name{font-size:11px}
+  .chm-saved{font-size:10px}
+}
+
+/* ── Social section — tablet 3-col (narrow soc-cards) ── */
+@media(max-width:900px){
+  .soc-card{padding:16px}
+  .lt-box-label{font-size:8px;letter-spacing:.2px}
+  .lt-box-val{font-size:14px}
+  .lt-box{padding:10px 8px}
+  .lt-summary{gap:8px}
+  .sf-text{font-size:11px}
+  .chm-name{font-size:11px}
+  .chm-saved{font-size:10px}
+  .gsm-amount{font-size:22px}
+}
+/* ── Quiz social container — mobile ── */
+@media(max-width:640px){
+  .quiz-social-wrap{padding:20px 18px!important;border-radius:20px!important}
+  .quiz-demo-panel{width:100%!important;max-width:100%!important;flex-shrink:1!important}
+  .quiz-demo-panel #quizDemo{padding:14px!important}
 }
 
 /* ── EXTRA GLASSY CARDS ── */
@@ -1032,8 +1091,8 @@ footer{border-top:1px solid var(--border);padding:72px 0 44px}
 .sf-avatar{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
 .sf-info{flex:1}
 .sf-name{font-size:12px;font-weight:700}
-.sf-text{font-size:11px;color:var(--muted);margin-top:2px}
-.sf-amount{font-size:13px;font-weight:800}
+.sf-text{font-size:11px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sf-amount{font-size:13px;font-weight:800;white-space:nowrap;flex-shrink:0}
 .sf-time{font-size:10px;color:var(--subtle);margin-top:4px}
 
 /* two-col equal */
@@ -1044,14 +1103,14 @@ footer{border-top:1px solid var(--border);padding:72px 0 44px}
 .loan-tracker{background:rgba(255,255,255,.025);border:1px solid var(--border2);border-radius:22px;padding:20px}
 .lt-summary{display:flex;gap:12px;margin-bottom:16px}
 .lt-box{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:12px;text-align:center}
-.lt-box-label{font-size:9px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted)}
-.lt-box-val{font-size:16px;font-weight:900;margin-top:4px}
+.lt-box-label{font-size:9px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lt-box-val{font-size:16px;font-weight:900;margin-top:4px;white-space:nowrap}
 .lt-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
 .lt-row:last-child{border-bottom:none}
 .lt-progress-wrap{flex:1}
 .lt-name-row{display:flex;justify-content:space-between;margin-bottom:5px}
 .lt-pname{font-size:11px;font-weight:700}
-.lt-pamount{font-size:11px;color:var(--muted)}
+.lt-pamount{font-size:11px;color:var(--muted);white-space:nowrap;flex-shrink:0}
 .lt-bar{height:4px;background:rgba(255,255,255,.06);border-radius:2px}
 .lt-bar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--teal),var(--v))}
 
@@ -1061,7 +1120,7 @@ footer{border-top:1px solid var(--border);padding:72px 0 44px}
 /* responsive 3-col grid */
 .resp-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-top:40px}
 @media(max-width:900px){.resp-grid-3{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.resp-grid-3{grid-template-columns:1fr}}
+@media(max-width:640px){.resp-grid-3{grid-template-columns:1fr}}
 @media(max-width:700px){.highlight-row{grid-template-columns:1fr}}
 .hl-box{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;text-align:center;transition:all .3s}
 .hl-box:hover{border-color:rgba(139,92,246,.3);transform:translateY(-3px)}
@@ -2148,7 +2207,7 @@ footer{border-top:1px solid var(--border);padding:72px 0 44px}
     </div>
 
     <!-- Quiz Feature Highlight -->
-    <div style="margin-top:50px;background:linear-gradient(135deg,rgba(139,92,246,.08),rgba(0,229,190,.04));border:1px solid rgba(139,92,246,.18);border-radius:28px;padding:36px 40px;position:relative;overflow:hidden" class="reveal">
+    <div style="margin-top:50px;background:linear-gradient(135deg,rgba(139,92,246,.08),rgba(0,229,190,.04));border:1px solid rgba(139,92,246,.18);border-radius:28px;padding:36px 40px;position:relative;overflow:hidden" class="reveal quiz-social-wrap">
       <div style="position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(0,229,190,.1));filter:blur(50px);pointer-events:none"></div>
       <div style="display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap">
         <div style="flex:1;min-width:260px">
@@ -2167,7 +2226,7 @@ footer{border-top:1px solid var(--border);padding:72px 0 44px}
           </div>
         </div>
         <!-- Interactive quiz demo -->
-        <div style="width:340px;flex-shrink:0">
+        <div style="width:340px;flex-shrink:0" class="quiz-demo-panel">
           <div id="quizDemo" style="background:rgba(10,8,28,.85);border:1px solid rgba(139,92,246,.25);border-radius:20px;padding:20px;backdrop-filter:blur(10px)">
             <!-- Quiz state: lobby -->
             <div id="quizLobby">
