@@ -4809,12 +4809,14 @@ async function doLogin(){
 }
 async function doRegister(){
   const s=document.getElementById('registerStatus');
+  const regBtn=document.querySelector('#panelRegister .auth-submit');
   const first=document.getElementById('regFirst').value.trim();
   const last=document.getElementById('regLast').value.trim();
   const email=document.getElementById('regEmail').value.trim();
   const pw=document.getElementById('regPw').value;
   if(!email||!pw||!first){s.textContent='Wypełnij wszystkie pola.';s.className='auth-status err';return;}
   if(pw.length<8){s.textContent='Hasło musi mieć min. 8 znaków.';s.className='auth-status err';return;}
+  if(regBtn)regBtn.disabled=true;
   s.textContent='Tworzę konto...';s.className='auth-status';
   const sb=getSupabase();
   if(sb){
@@ -4822,29 +4824,42 @@ async function doRegister(){
       email,password:pw,
       options:{data:{first_name:first,last_name:last},emailRedirectTo:window.location.origin}
     });
-    if(error){s.textContent='✗ '+error.message;s.className='auth-status err';return;}
-    if(data.user&&!data.session){
-      // Email confirmation required
-      s.textContent='✓ Konto utworzone! Sprawdź email — wysłaliśmy link potwierdzający.';s.className='auth-status ok';
-      // Also send welcome email via EmailJS
-      _sendWelcomeEmail(email,first);
-    } else {
-      s.textContent='✓ Konto utworzone! Witaj w FundMind!';s.className='auth-status ok';
-      setTimeout(()=>{closeAuth(true);const b=document.getElementById('authUserBadge');if(b)b.classList.add('show');},700);
+    if(error){
+      s.textContent='✗ '+error.message;s.className='auth-status err';
+      if(regBtn)regBtn.disabled=false;
+      return;
     }
+    s.textContent='✓ Konto utworzone! Sprawdź skrzynkę — za chwilę otrzymasz email powitalny.';s.className='auth-status ok';
+    await _sendWelcomeEmail(email,first);
+    setTimeout(()=>{if(!data.session){return;}closeAuth(true);const b=document.getElementById('authUserBadge');if(b)b.classList.add('show');},700);
   } else {
-    // Demo mode
-    setTimeout(()=>{
-      s.textContent='✓ Konto utworzone (tryb demo)! Witaj, '+first+'!';s.className='auth-status ok';
-      setTimeout(()=>{closeAuth(true);const b=document.getElementById('authUserBadge');if(b)b.classList.add('show');},900);
-    },1000);
+    // Supabase not configured — send welcome email directly
+    const ok=await _sendWelcomeEmail(email,first);
+    if(ok){
+      s.textContent='✓ Zarejestrowano! Sprawdź skrzynkę — za chwilę otrzymasz email powitalny.';s.className='auth-status ok';
+      setTimeout(()=>{closeAuth(true);const b=document.getElementById('authUserBadge');if(b)b.classList.add('show');},1200);
+    } else {
+      s.textContent='✗ Błąd wysyłki — spróbuj ponownie lub napisz na contact@fundmindapp.com';s.className='auth-status err';
+      if(regBtn)regBtn.disabled=false;
+    }
   }
 }
-function _sendWelcomeEmail(email,name){
-  const SERVICE_ID='YOUR_SERVICE_ID';
-  const WELCOME_TEMPLATE='YOUR_WELCOME_TEMPLATE_ID';
-  if(typeof emailjs!=='undefined'&&SERVICE_ID!=='YOUR_SERVICE_ID'){
-    emailjs.send(SERVICE_ID,WELCOME_TEMPLATE,{to_email:email,to_name:name,app_name:'FundMind'}).catch(()=>{});
+async function _sendWelcomeEmail(email,name){
+  try{
+    const res=await fetch('/api/signup',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name,email,_hp:''})
+    });
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok||!data.ok){
+      console.error('[FundMind signup] API error',res.status,data.error||'');
+      return false;
+    }
+    return true;
+  }catch(e){
+    console.error('[FundMind signup] fetch error',e.message);
+    return false;
   }
 }
 
@@ -5346,7 +5361,7 @@ function fcwSend(msg){
 }
 
 /* ── CONTACT FORM ── */
-function submitContactForm(e){
+async function submitContactForm(e){
   e.preventDefault();
   const st=document.getElementById('contactStatus');
   const btn=document.querySelector('.contact-submit');
@@ -5354,33 +5369,26 @@ function submitContactForm(e){
   const email=document.getElementById('cf-email').value.trim();
   const subject=document.getElementById('cf-subject').value.trim();
   const msg=document.getElementById('cf-msg').value.trim();
-  st.textContent='Wysyłam...';st.className='contact-helper';
+  if(!name||!email||!msg){st.textContent='Please fill in all required fields.';st.className='contact-helper status-err';return;}
+  st.textContent='Sending...';st.className='contact-helper';
   if(btn)btn.disabled=true;
-  // EmailJS sending — configure YOUR_SERVICE_ID and YOUR_TEMPLATE_ID in EmailJS dashboard
-  const SERVICE_ID='YOUR_SERVICE_ID';
-  const TEMPLATE_ID='YOUR_TEMPLATE_ID';
-  if(typeof emailjs!=='undefined'&&SERVICE_ID!=='YOUR_SERVICE_ID'){
-    emailjs.send(SERVICE_ID,TEMPLATE_ID,{from_name:name,from_email:email,subject:subject,message:msg,reply_to:email})
-      .then(()=>{
-        st.textContent='✓ Wiadomość wysłana! Odpowiemy w ciągu 24h.';st.className='contact-helper status-ok';
-        document.getElementById('contactForm').reset();
-        if(btn)btn.disabled=false;
-        setTimeout(()=>{st.textContent='';},6000);
-      })
-      .catch(err=>{
-        st.textContent='✗ Błąd wysyłania. Napisz bezpośrednio: contact@fundmindapp.com';
-        st.className='contact-helper status-err';
-        if(btn)btn.disabled=false;
-        console.error('EmailJS error',err);
-      });
-  } else {
-    // Fallback: open mailto if EmailJS not configured
-    window.location.href=`mailto:contact@fundmindapp.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent('Od: '+name+' ('+email+')\n\n'+msg)}`;
-    st.textContent='✓ Otwarto klienta pocztowego. Możesz też napisać bezpośrednio na contact@fundmindapp.com';
-    st.className='contact-helper status-ok';
+  try{
+    const res=await fetch('/api/contact',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name,email,subject,message:msg,_hp:''})
+    });
+    const data=await res.json();
+    if(!res.ok||!data.ok)throw new Error(data.error||'Server error');
+    st.textContent='✓ Message sent! We\'ll get back to you within 24h.';st.className='contact-helper status-ok';
     document.getElementById('contactForm').reset();
+    setTimeout(()=>{st.textContent='';},6000);
+  }catch(err){
+    st.textContent='✗ Failed to send. Write directly to contact@fundmindapp.com';
+    st.className='contact-helper status-err';
+    console.error('Contact error',err);
+  }finally{
     if(btn)btn.disabled=false;
-    setTimeout(()=>{st.textContent='';},8000);
   }
 }
 
